@@ -1,0 +1,33 @@
+# -*- mode: sh -*-
+
+z() {
+  com="$1"
+  shift
+  make -f $Here/Makefile D="$D" $arg="$*"  $1
+ }
+bye() { ## ## push all to on-line repo ## git
+  gitting
+  git status
+  git commit -am "saving"
+  git push origin master
+}
+hi() { ## ## pull updates from on-line repo ## git
+  gitting
+  git push origin master
+}
+gitting() {
+  git config --global credential.helper cache
+  git config credential.helper 'cache --timeout=3600'
+  git config --global push.default simple
+}
+timm() { ## ## Private: sets up this repo for timm ## git
+  git config --global user.name "Tim Menzies"
+  git config --global user.email tim.menzies@gmail.com
+}
+legal() { ## ## show copyright notice ## misc
+  cat $D/LICENSE.md
+}
+ide() {
+  . $D/etc/dotbashrc
+}
+PS1="hello> "
