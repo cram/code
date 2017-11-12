@@ -50,6 +50,14 @@
       (setf (? x a) 2000)
       (test 2000 (? x a))))
 
+(deftest randi1! ()
+  (reset-seed)
+  (print
+   (sort
+    (loop for i from 1 to 100
+       collect  (randi 10)) #'<))
+  )
+
 (deftest randf! ()
   (let (one two)
     (reset-seed)

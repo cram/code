@@ -13,44 +13,56 @@ RLeservoir sampling.
 
 |#
 
-(let ((max 256))
-  (defthing sample thing
+ (defthing sample col
     (now   -1)
     (sorted nil)
-    (most   max)
-    (all    (make-array max :initial-element nil))))
+    (most   64)
+    (all    (make-array 64 :initial-element nil) ))
+
+(defun sample0 (&optional (max 256))
+  (let ((x (make-instance 'sample :most max)))
+    (setf (? x all)
+           (make-array max :initial-element  nil))
+    x))
 
 (defmethod add1 ((x sample) y &optional (f #'identity))
-  (with-slots (size max all sorted) x
-    (let ((pos (cond
-                 ((< size (1- max))      (incf size))
-                 ((< (randf) (/ size n)) (randi max)))))
-      (setf (aref all pos) (funcall f y)
-            sorted nil))))
+  (with-slots (now most n all sorted)  x
+    (setf sorted nil
+          y      (funcall f y))
+    (cond ((< now (1- most))
+           (setf (aref all (incf now)) y))
+          ((< (randf) (/ now n))
+           (setf (aref all (randi now)) y)))))
 
+(defmethod contents ((x sample))
+  (coerce (subseq (? x all) 0 (1+ (? x now))) 'list))
+
+(defmethod sorted-contents ((x sample)) 
+  (if (? x sorted)
+      (contents x)
+      (let ((ordered (sort (contents x) #'<)))
+        (doitems (one n ordered)
+            (setf (aref (? x all) n) one))
+        (setf (? x sorted) t)
+        ordered)))
+    
 (defun sample* (lst &optional (f #'identity))
-  (adds (make-instance 'sample) lst f))
+  (adds (sample0) lst f))
 
-(defmethod copy ((old num))
-  (let ((new (make-instance 'sample)))
-    (copier old new max n)
+(defmethod copy ((old sample))
+  (let ((new (sample0)))
+    (copier old new now sorted most n)
     (setf (slot-value new 'all)
           (copy-list (slot-value old 'all)))))
      
 (defmethod print-object ((x sample)  src)
-  (with-slots (n pos txt w mu m2 lo hi) x
-    (format
-     src "~a"
-     `(sample (n   . ,(? x n))
-              (all . ,(length (? x all)))))))
+  (with-slots (now sorted most n all) x
+    (format src "~a"
+            `(sample (n   . ,n)    (sorted . ,sorted)
+                     (most. ,most) (now    . ,now)
+                     (all . ,(length all))))))
 
 (defmethod any ((x sample))
   (aref (? x all)
-        (random (length *list*)) *list*))  
-  (while (>= w 1)
-      (setf x1 (- (* 2 (randf) 1))
-            x2 (- (* 2 (randf) 1))
-            w  (+ (* x1 x1) (* x2 x2))))
-  (with-slots (mu sd) x
-    (+ mu (* sd w x1 (sqrt (/ (* -2 (log w)) w))))))
-
+        (randi
+         (1- (length (? x all))))))

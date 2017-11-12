@@ -47,8 +47,8 @@
                 (setf fail 0 pass 0)
                 (mapcar #'run (reverse *tests*))
                 (format t "~&~%; pass : ~a = ~5,1f% ~%; fail : ~a = ~5,1f% ~%"
-                        pass (* 100 (/ pass (+ pass fail)))
-                        fail (* 100 (/ fail (+ pass fail)))))))
+                        pass (* 100 (/ pass (+ 0.000000001 pass fail)))
+                        fail (* 100 (/ fail (+ 0.000000001 pass fail)))))))
     )
 )  
   

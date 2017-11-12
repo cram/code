@@ -1,6 +1,5 @@
 (load "../src/boot")
 
-
 ;;;; strings
 (defun nchars (&optional (n 40) (c #\Space))
   (with-output-to-string (s)
@@ -36,7 +35,6 @@
       (float (/ (funcall what (* number div)) div))))
 
 (defun r2 (n) (round-to n 2))
-
 (defun r0 (n) (round-to n 0))
 
 ;;;; conversion
@@ -94,5 +92,3 @@
     (setf seed (mod (* multiplier seed) modulus))
     (/ seed modulus))
 )
-
-(/ 1 0)
