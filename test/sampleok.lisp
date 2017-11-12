@@ -11,4 +11,8 @@
     (print (contents x))
     (test 1 1)))
 
-
+(deftest tiles! ()
+  (reset-seed)
+  (let ((x (sample0 200)))
+    (loop for i from 1 to 10000 do (add x i))
+    (print (tiles x))))  

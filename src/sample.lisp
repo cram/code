@@ -45,6 +45,18 @@ RLeservoir sampling.
             (setf (aref (? x all) n) one))
         (setf (? x sorted) t)
         ordered)))
+
+(defmethod tiles ((x sample) &key (jump 20) (start 10))
+  (let* ((lst   (sorted-contents x))
+         (n     (? x now))
+         (jump  (1+ (floor (* (/ jump   100) n))))
+         (now   (1+ (floor (* (/ start  100) n))))
+         (out))
+    (print `(jump ,jump now ,now))
+    (while (< now n)
+      (push (aref (? x all) now) out)
+      (incf now jump))
+    (reverse out)))
     
 (defun sample* (lst &optional (f #'identity))
   (adds (sample0) lst f))
