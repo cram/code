@@ -15,6 +15,14 @@
                 most new
                 mode x)))))
 
+
+; # Hello
+;
+; here  sfsdf dsf sdfsd sdf
+; sdfdsd
+; dfdfds
+; sdfsd
+
 (defmethod ready ((x sym))
   (with-slots (_ent cnt n) x
     (unless (not (and  _ent _w))
@@ -22,16 +30,15 @@
             _w   nil)
       (dohash (k v cnt)
         (let ((p (/ v n)))
-          (push (cons p k) _w)
+          (push (cons (/ v n) k) _w)
           (decf _ent (* p (log p 2)))))
-      (setf _w
-            (sort _w ; asdasdasas reverse the index
-                  #'(lambda (a b)
-                      (> (first a) (first b))))))))
+      (setf _w  (sort _w ; asdasdasas reverse the index
+                      #'(lambda (a b)
+                          (> (first a) (first b))))))))
 
 (defun ent ((x sym))
   (update x)
-  (? x _ent))
+  (? x _ent)) ;;;;;;;;;;
   
 (defun sym* (lst &optional (f #'identity))
   (adds (make-instance 'sym) lst f))
@@ -51,12 +58,14 @@
      `((n  . ,n) (most . ,most) (mode . ,mode)
        (_ent  . ,end) (cnt . ,(hash-table-count cnt))))))
 
-(defmethod any ((x sym) &aux x1 x2 (w 1))
-  (ready x)
-  (while (>= w 1)
-      (setf x1 (- (* 2 (randf) 1))
-            x2 (- (* 2 (randf) 1))
-            w  (+ (* x1 x1) (* x2 x2))))
-  (with-slots (mu sd) x
-    (+ mu (* sd w x1 (sqrt (/ (* -2 (log w)) w))))))
-
+(defmethod any ((x sym))
+  (with-slots (_w) x
+    (labels ((one (n head tail)
+               (decf n (car head))
+               (if (<= n 0) 
+                   (cdr head)
+                   (if talk
+                       (one n (car lst) (cdr lst))
+                       (cdr head)))))
+      (ready x)
+      (one (randf) (car _w) (cdr _w)))))
