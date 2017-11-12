@@ -15,7 +15,6 @@
                 most new
                 mode x)))))
 
-
 ; # Hello
 ;
 ; here  sfsdf dsf sdfsd sdf
@@ -37,7 +36,7 @@
                           (> (first a) (first b))))))))
 
 (defun ent ((x sym))
-  (update x)
+  (ready x)
   (? x _ent)) ;;;;;;;;;;
   
 (defun sym* (lst &optional (f #'identity))
@@ -56,16 +55,17 @@
     (format
      src "~a"
      `((n  . ,n) (most . ,most) (mode . ,mode)
-       (_ent  . ,end) (cnt . ,(hash-table-count cnt))))))
+       (_ent  . ,_ent) (cnt . ,(hash-table-count cnt))))))
 
 (defmethod any ((x sym))
+  (ready x)
   (with-slots (_w) x
-    (labels ((one (n head tail)
-               (decf n (car head))
-               (if (<= n 0) 
-                   (cdr head)
-                   (if talk
-                       (one n (car lst) (cdr lst))
-                       (cdr head)))))
-      (ready x)
+    (labels
+        ((one (n head tail)
+           (decf n (car head))
+           (if (<= n 0) 
+               (cdr head)
+               (if talk
+                   (one n (car lst) (cdr lst))
+                   (cdr head)))))
       (one (randf) (car _w) (cdr _w)))))
