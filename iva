@@ -1,5 +1,7 @@
 # -*- mode:sh; -*-
 
+# Usage:  sh iva
+
 Dir="/tmp/$USER/lisp"
 Dot="$Dir/dotbashrc"
 Ignore="$Dir/gitignore"
@@ -164,15 +166,6 @@ reload() {
 alias e="open -a /Applications/Emacs.app "
 alias g="git status; git commit -am updated; git push"
 alias ls="ls -G"
-
-
-_c1="\[\033[01;32m\]"
-_c2="\[\033[01;34m\]"
-_c3="\[\033[31m\]"
-_c6="\033[33m"
-_c5="\[\033[35m\]$"
-_c0="\[\033[00m\]"
-_c7="[\033]01;19\]"
 
 red=$(tput setaf 1)
 blue=$(tput setaf 6)

@@ -20,13 +20,6 @@
 (defun num* (lst &optional (f #'identity))
   (adds (make-instance 'num) lst f))
 
-(defmacro copier (old new &rest fields)
-  `(with-slots ,fields ,old
-     ,@(mapcar #'(lambda (slot)
-                        `(setf (slot-value ,new ',slot) ,slot))
-               fields)
-     ,new))
-
 (defmethod copy ((old num))
   (let ((new (make-instance 'num)))
     (copier old new n sd mu m2 lo hi)))

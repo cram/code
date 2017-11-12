@@ -14,6 +14,14 @@
        (incf ,n)
        ,@body)))
 
+(defmacro dohash ((k v h &optional out) &body body )
+  "Set key 'k' and value 'v' to each item in a list, and its position."
+  `(progn
+     (maphash #'(lambda (,k ,v)
+                  ,@body)
+              ,h)
+     ,out))
+
 (defmacro while (test &body body)
   `(do ()
        ((not ,test))
