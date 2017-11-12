@@ -1,0 +1,207 @@
+# -*- mode:sh; -*-
+
+Dir="/tmp/$USER/lisp"
+Dot="$Dir/dotbashrc"
+Ignore="$Dir/gitignore"
+Here=$PWD
+Sbcl=/usr/local/bin/sbcl
+
+mkdir -p $Dir
+
+cat<<-'EOF'>$Ignore
+	-*- mode: gitignore; -*-
+	# docco
+	docs
+
+        # Mac
+	General
+	.DS_Store
+	.AppleDouble
+	.LSOverride
+
+	# Thumbnails
+	._*
+
+	# Files that might appear in the root of a volume
+	.DocumentRevisions-V100
+	.fseventsd
+	.Spotlight-V100
+	.TemporaryItems
+	.Trashes
+	.VolumeIcon.icns
+	.com.apple.timemachine.donotpresent
+
+	# Directories potentially created on remote AFP share
+	.AppleDB
+	.AppleDesktop
+	Network Trash Folder
+	Temporary Items
+	.apdisk
+
+	# lisp
+	*.FASL
+	*.fasl
+	*.lisp-temp
+	*.dfsl
+	*.pfsl
+	*.d64fsl
+	*.p64fsl
+	*.lx64fsl
+	*.lx32fsl
+	*.dx64fsl
+	*.dx32fsl
+	*.fx64fsl
+	*.fx32fsl
+	*.sx64fsl
+	*.sx32fsl
+	*.wx64fsl
+	*.wx32fsl
+	*~
+	\#*\#
+	/.emacs.desktop
+	/.emacs.desktop.lock
+	*.elc
+	auto-save-list
+	tramp
+	.\#*
+
+	# Org-mode
+	.org-id-locations
+	*_archive
+
+	# flymake-mode
+	*_flymake.*
+
+	# eshell files
+	/eshell/history
+	/eshell/lastdir
+
+	# elpa packages
+	/elpa/
+
+	# reftex files
+	*.rel
+
+	# AUCTeX auto folder
+	/auto/
+
+	# cask packages
+	.cask/
+	dist/
+
+	# Flycheck
+	flycheck_*.el
+
+	# server auth directory
+	/server/
+
+	# projectiles files
+	.projectile
+
+	# directory configuration
+	.dir-locals.el
+EOF
+
+cat<<'EOF'>$Dot
+
+install() {
+  sudo npm update
+  sudo npm install -g docco
+  brew install sbcl # sbcl > 1.2
+  brew install gawk
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus
+  brew linkapps emacs-plus
+
+  if [ -d "$HOME/.emacs.d" ]; then
+    echo "No fresh super-emacs unless you first  delete $HOME/.emacs.d"
+  fi
+  if [ ! -d "$HOME/.emacs.d" ]; then
+     mkdir -p $HOME/tmp/super-emacs
+     cd $HOME/tmp/super-emacs
+     git clone https://github.com/myTerminal/super-emacs
+     mv super-emacs/.emacs.d ~/
+     echo "now edit $HOME/.emacs.d/init.el to load etc/timmacs.el"
+  fi
+}
+ok() {
+   local here=$PWD
+   cd $Here/test
+   echo ";;;; ../test/${1}ok"
+   time $Sbcl  --noinform   \
+          --disable-debugger  \
+          --eval "(progn (load \"../src/boot\")
+                         (reload \"../test/${1}ok\")
+                         (tests) 
+                         (exit))" 2>&1 | gawk '
+                     /^Backtrace for/ { m=1    } 
+                                      { n += m } 
+                                n> 10 { exit   } 
+                                n>=1 && n <= 10 { $0=substr($0,1, 70)
+				                  print $0
+						  next 
+						}
+                                      1'
+          #--eval "(progn (tests) (exit))" 2>&1 | tee -a some_file  | gawk '/^Backtrace for/ { exit } 1'
+   cd $here
+}
+here() { 
+	cd $1; basename $PWD 
+}
+timm() {
+   gitting "Tim Menzies" "tim@menzies.us"
+}
+gitting() {
+        git config user.name "$1"
+        git config user.email "$2"
+        git config --global credential.helper cache
+        git config credential.helper 'cache --timeout=3600'
+}
+reload() {
+  . "$Dot"
+}
+
+alias e="open -a /Applications/Emacs.app "
+alias g="git status; git commit -am updated; git push"
+alias ls="ls -G"
+
+
+_c1="\[\033[01;32m\]"
+_c2="\[\033[01;34m\]"
+_c3="\[\033[31m\]"
+_c6="\033[33m"
+_c5="\[\033[35m\]$"
+_c0="\[\033[00m\]"
+_c7="[\033]01;19\]"
+
+red=$(tput setaf 1)
+blue=$(tput setaf 6)
+ltyl=$(tput setaf 11)
+white=$(tput setaf 15)
+export PROMPT_COMMAND='echo  -ne "${red}LISP101: ${blue}\033]0;/$(here ../..)/$(here ..)/$(here .)\007${white}";PS1="$(here ../..)/$(here ..)/$(here .) \!> "'
+    
+echo -n "${blue}"
+cat<<-'EOB'
+       _     _            
+      | |   (_)           
+   ___| |__  ___   ____ _ 
+  / __| '_ \| \ \ / / _` |
+  \__ \ | | | |\ V / (_| |
+  |___/_| |_|_| \_/ \__,_|
+
+EOB
+echo -n "${white}"
+
+EOF
+
+if [ ! -f "$Here/.gitignore" ]; then
+	cp $Ignore $Here/.gitignore
+	git add $Here/.gitignore
+fi
+
+Sbcl="$Sbcl" \
+Here="$Here"  \
+Dot="$Dot"     \
+bash --init-file $Dot  -i
+
+
