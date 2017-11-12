@@ -182,12 +182,14 @@ export PROMPT_COMMAND='echo  -ne "${red}LISP101: ${blue}\033]0;/$(here ../..)/$(
     
 echo -n "${blue}"
 cat<<-'EOB'
-       _                         
-      ( )        _               
-  ___ | |__     (_) _   _    _ _ 
-/',__)|  _ `\   | |( ) ( ) /'_` )
-\__, \| | | |   | || \_/ |( (_| |
-(____/(_) (_)   (_)`\___/'`\__,_)
+
+       _                           "Our paths may be different. 
+      ( )        _                  Our destination is the same."
+  ___ | |__     (_) _   _    _ _     -- Amish Tripathi
+/',__)|  _ `\   | |( ) ( ) /'_` )  
+\__, \| | | |   | || \_/ |( (_| |  "Shiva danced the world into 
+(____/(_) (_)   (_)`\___/'`\__,_)   existence ... That's a very nice 
+                                    thought." -- Michael Tippett
 
 EOB
 echo -n "${white}"
