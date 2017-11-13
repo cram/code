@@ -106,6 +106,13 @@ EOF
 
 cat<<'EOF'>$Dot
 
+doco() {
+     local start=$PWD
+     cd $HOME/gits/lisp101/lisp101.github.io
+     make
+     cd $start
+}
+
 install() {
   sudo npm update
   sudo npm install -g docco
