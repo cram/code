@@ -2,13 +2,12 @@
 (reload "../src/col")
 
 (defthing sym col
-  (most 0) (mode) (_ent) (_w)
+  (most 0) (mode) (_ent) (x_w)
   (cnt (make-hash-table)))
 
-(defmethod add1 ((x sym) y &optional (f #'identity))
+(defmethod add1 ((x sym) y)
   (with-slots (most mode cnt ent) x
-    (let* ((y (funcall f y))
-           (new (incf (gethash y cnt 0))))
+    (let* ((new (incf (gethash y cnt 0))))
       (if (> new most)
           (setf _ent nil
                 _w   nil
@@ -23,7 +22,7 @@
 ; sdfsd
 
 (defmethod ready ((x sym))
-  (with-slots (_ent cnt n) x
+  (with-slots (_ent cnt n _w) x
     (unless (not (and  _ent _w))
       (setf _ent 0
             _w   nil)
@@ -35,7 +34,7 @@
                       #'(lambda (a b)
                           (> (first a) (first b))))))))
 
-(defun ent ((x sym))
+(defmethod  ent ((x sym))
   (ready x)
   (? x _ent)) ;;;;;;;;;;
   

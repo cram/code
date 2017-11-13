@@ -6,10 +6,9 @@
   (lo most-positive-fixnum)
   (hi most-negative-fixnum))
 
-(defmethod add1 ((x num) y &optional (f #'identity))
+(defmethod add1 ((x num) y)
   (with-slots (hi lo n mu m2 sd) x
-    (let* ((y     (funcall f y))
-           (delta (- y mu)))
+    (let* ((delta (- y mu)))
       (setf lo (min lo y)
             hi (max hi y)
             mu (+ mu (/ delta n))

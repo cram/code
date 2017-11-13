@@ -4,8 +4,8 @@
 (defthing col thing
   (txt "") (pos 0) (n 0) (w 1))
  
-(defmethod add1((x col) y &optional f)
-  (declare (ignore x y f))
+(defmethod add1((x col) y)
+  (declare (ignore x y))
   (assert nil () "add1 should be implemented by subclass"))
 
 (defmethod norm1((x col) y)
