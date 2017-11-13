@@ -29,7 +29,7 @@
    :n n :epsilon epsilon :f f))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun superranges1 (arr f epsilon &aux out)
+(defun superranges1 (arr f e &aux out)
   "split array at point that minimized expected value of sd"
   (macrolet ((at (n v) `(slot-value (aref arr ,n) ,v)))
     (labels
@@ -48,22 +48,17 @@
                              (r   (all (1+ j) hi))
                              (now (+ (sd b4 l) (sd b4 r))))
                         (if (< now best)
-                            (if (> (- (at r 'mu) (at l 'mu))
-                                   epsilon)
+                            (if (> (- (at r 'mu) (at l 'mu)) e)
                                 (setf best now
-                                      cut   j)))))))
+                                      cut  j)))))))
            cut)
          (recurse (lo cut hi)
            (split lo        cut)
            (split (1+ cut)  hi))
-         (keep (lo hi)
-           (push (coerce (subseq arr lo hi) 'list)
-                 out))
          (split (lo hi)
-           (let ((cut (argmin lo hi)))
-             (if cut
-                 (recurse lo cut hi)
-                 (keep lo hi)))))
+           (aif (argmin lo hi) 
+                (recurse lo it hi)
+                (push (a->l arr :lo lo :hi hi) out)))
       (split 0 (1- (length arr)))
       out)))
 

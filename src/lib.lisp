@@ -7,6 +7,10 @@
       (format s "~a" c))))
 
 ;;;; macros
+(defmacro aif (test then &optional else)
+  `(let ((it ,test))
+     (if it ,then ,else)))
+
 (defmacro doitems ((one n list &optional out) &body body )
   "Set 'one' and 'n' to each item in a list, and its position."
   `(let ((,n -1))
@@ -42,13 +46,27 @@
     (let ((div (expt 10 precision)))
       (float (/ (funcall what (* number div)) div))))
 
+(defun r4 (n) (round-to n 4))
 (defun r2 (n) (round-to n 2))
 (defun r0 (n) (round-to n 0))
 
 ;;;; conversion
 (defun l->a (lst)
   (make-array (length lst) :initial-contents lst))
-   
+
+(defun a->l (a &key (start 0) (stop (1- (length a))))
+  (coerce (subseq a start stop) 'list))
+
+(labels
+    ((s->x (str &optional (reader #'read-char))
+       (if (not (streamp str))
+           (s->x (make-string-input-stream str) reader)
+           (if (listen str)
+               (cons (funcall reader str)
+                     (s->x    str reader))))))
+  (defun s->w (str) (s->x str  #'read))
+  (defun s->l (str) (s->x str  #'read-char)))
+
 ;;;; Simple access/update to recursive slots in LISP
 ;; Tested on defstructs. Should also work on instances.
 ;; Tim@menzies.us, Oct 2017 
