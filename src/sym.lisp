@@ -42,7 +42,7 @@
         (let ((p (/ v n)))
           (push (cons (/ v n) k) _w)
           (decf _ent (* p (log p 2)))))
-      (setf _w  (sort _w ; asdasdasas reverse the index
+      (setf _w  (sort _w 
                       #'(lambda (a b)
                           (> (first a) (first b))))))))
 
@@ -52,14 +52,16 @@
 
 (defmethod any ((x sym))
   (ready x)
-  (with-slots (_w) x
-    (labels
-        ((one (n lst)
-           (let ((v    (caar lst))
-                 (k    (cdar lst))
-                 (tail (cdr  lst)))
-             (decf n v)
-             (cond ((<= n 0)  k)
-                   (tail      (one n tail))
-                   (t         k)))))
-      (one (randf) _w))))
+  (let ((lst  (? x _w))
+        (n    (randf))
+        v
+        k)
+    (while (and (> n 0)
+                lst)
+      (setf  v   (caar lst)
+             k   (cdar lst)
+             n   (- n v)
+             lst (cdr lst)))
+             
+    k))
+
