@@ -1,17 +1,6 @@
 (load "../src/boot")
 (reload "../src/col")
 
-#|
-
-# mutli lone
-
-stuff
-
-- asdas
-- asdsa
-
-
-|#
 (defthing sym col
   (most 0) (mode) (_ent) (_w)
   (cnt (make-hash-table)))
