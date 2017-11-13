@@ -1,6 +1,17 @@
 (load "../src/boot")
 (reload "../src/col")
 
+#|
+
+# mutli lone
+
+stuff
+
+- asdas
+- asdsa
+
+
+|#
 (defthing sym col
   (most 0) (mode) (_ent) (_w)
   (cnt (make-hash-table)))
@@ -23,41 +34,34 @@
           (new (make-instance 'sym)))
       (copier old new n most mode _ent)
       (dohash (k v cnt new)
-        (setf (gethash k (slot-value new 'cnt))  v)))))
+        (setf (gethash k (slot-value new 'cnt)) v)))))
 
 (defmethod print-object ((x sym) src)
   (with-slots (n most mode _ent cnt) x
-    (format
-     src "~a"
-     `((n     . ,n)     (most . ,most)
-       (mode . ,mode)   (_ent  . ,_ent)
-       (cnt  . ,(hash-table-count cnt))))))
+    (format src "~a"
+            `(sym
+              (n     . ,n)     (most . ,most)
+              (mode . ,mode)   (_ent  . ,_ent)
+              (cnt  . ,(hash-table-count cnt))))))
 
-(defmethod ready ((x sym))
+(defmethod ready ((x sym) &aux (e 0) w)
   (with-slots (_ent cnt n _w) x
     (unless _w
-      (setf _ent 0
-            _w   nil)
       (dohash (k v cnt)
         (let ((p (/ v n)))
-          (push (cons (/ v n) k) _w)
-          (decf _ent (* p (log p 2)))))
-      (setf _w  (sort _w 
-                      #'(lambda (a b)
-                          (> (first a) (first b))))))))
+          (push (cons (/ v n) k) w)
+          (decf e (* p (log p 2)))))
+      (setf _ent e
+            _w   (sort w #'> :key #'first)))))
 
 (defmethod ent ((x sym))
   (ready x)
   (? x _ent))
 
-(defmethod any ((x sym))
+(defmethod any ((x sym) &aux v k (n (randf)))
   (ready x)
-  (let ((lst  (? x _w))
-        (n    (randf))
-        v
-        k)
-    (while (and (> n 0)
-                lst)
+  (let ((lst  (? x _w)))
+    (while (and lst (> n 0))
       (setf  v   (caar lst)
              k   (cdar lst)
              n   (- n v)
