@@ -41,6 +41,7 @@
                         `(setf (slot-value ,new ',slot) ,slot))
                fields)
      ,new))
+
 ;;;; maths
 (defun round-to (number precision &optional (what #'round))
     (let ((div (expt 10 precision)))
@@ -91,7 +92,6 @@
   (if (null more-slots)
       `(slot-value ,obj ',first-slot)
       `(? (slot-value ,obj ',first-slot) ,@more-slots)))
-
 
 (defun defslot  (name form)
   `(,name

@@ -1,7 +1,7 @@
-(load "../src/boot")
-(reload "../src/col")
+(load   "../src/boot")
+(reload "../src/summary")
 
-(defthing num col
+(defthing num summary
   (mu 0) (m2 0) (sd 0) (rank 0)
   (lo most-positive-fixnum)
   (hi most-negative-fixnum))
@@ -26,8 +26,8 @@
 (defmethod print-object ((x num) src)
   (with-slots (n pos txt w mu m2 lo hi) x
     (format src "~a"
-      `((n  . ,n) (pos . ,pos) (txt . ,txt) (w  . ,w)
-        (mu . ,mu) (m2 . ,m2)  (lo  . ,lo)  (hi . ,hi)))))
+      `((n  . ,n)  (pos . ,pos) (txt . ,txt) (w  . ,w)
+        (mu . ,mu) (m2  . ,m2)  (lo  . ,lo)  (hi . ,hi)))))
   
 (defmethod nsd ((x num) &optional (n 1))
   (* (slot-value x 'sd) (/ (slot-value x 'n) n)))

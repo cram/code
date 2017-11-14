@@ -4,7 +4,7 @@
 
 |#
 (load "../src/boot")
-(reload "../src/col")
+(reload "../src/summary")
 #|
 
 ## Samples
@@ -13,7 +13,7 @@ RLeservoir sampling.
 
 |#
 
- (defthing sample col
+ (defthing sample summary
     (now   -1)
     (sorted nil)
     (most   64)

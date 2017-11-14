@@ -1,15 +1,14 @@
-(when (not (fboundp 'reload))
-  (format t ";;;; ../src/boot~%")
+(unless  (fboundp 'reload)
   
-  (let (seen)  
+  (let ((seen))  
     (defun reload (f)
-      (when (not (member f seen))
+      (when (not (member f seen :test #'equalp))
         (push f seen)
-         (handler-bind
-             ((style-warning #'muffle-warning))
-           (format t ";;;; ~a~%" f)
-           (load f)))))
-
+        (handler-bind
+            ((style-warning #'muffle-warning))
+          (format t ";;; ~a~%" f)
+          (load f)))))
+  
   (defparameter *tests* nil)
 
   (defmacro deftest (name params  doc &body body)

@@ -1,7 +1,7 @@
 (load "../src/boot")
-(reload "../src/col")
+(reload "../src/summary")
 
-(defthing sym col
+(defthing sym summary
   (most 0) (mode) (_ent) (_w)
   (cnt (make-hash-table)))
 
