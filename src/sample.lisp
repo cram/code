@@ -13,17 +13,15 @@ RLeservoir sampling.
 
 |#
 
- (defthing sample summary
-    (now   -1)
-    (sorted nil)
-    (most   64)
-    (all    (make-array 64 :initial-element nil) ))
+(defthing sample summary
+  (now   -1)
+  (sorted nil)
+  (most   64)
+  (all))
 
-(defun sample0 (&optional (max 256))
-  (let ((x (make-instance 'sample :most max)))
-    (setf (? x all)
-           (make-array max :initial-element  nil))
-    x))
+(defmethod initialize-instance :after ((x sample) &key)
+  (setf (? x all)
+        (make-array (? x most) :initial-element nil)))
 
 (defmethod add1 ((x sample) y )
   (with-slots (now most n all sorted)  x

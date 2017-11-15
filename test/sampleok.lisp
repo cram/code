@@ -3,7 +3,7 @@
 
 (deftest sample! ()
   (reset-seed)
-  (let ((x (sample0 20)))
+  (let ((x (make-instance 'sample :most 20)))
     (loop for i from 1 to 10 do (add x (randi 100)))
     (print (? x all))
     (print (sorted-contents x))
@@ -13,6 +13,6 @@
 
 (deftest tiles! ()
   (reset-seed)
-  (let ((x (sample0 200)))
+  (let ((x (make-instance 'sample :most 200)))
     (loop for i from 1 to 10000 do (add x i))
     (print (tiles x))))  

@@ -114,6 +114,7 @@ doco() {
 }
 
 install() {
+  brew install npm
   sudo npm update
   sudo npm install -g docco
   brew install sbcl # sbcl > 1.2
