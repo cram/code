@@ -36,6 +36,16 @@ RLeservoir sampling.
 (defmethod contents ((x sample))
   (coerce (subseq (? x all) 0 (1+ (? x now))) 'list))
 
+(defmethod median ((x sample))
+  (let ((lst (sorted-contents x))
+        (n   (length lst))
+        (mid  (floor n 2)))
+    (if (oddp n)
+        (nth  mid lst)
+        (/ (+ (nth (1- mid) lst)
+              (nth mid lst))
+           2))))
+
 (defmethod sorted-contents ((x sample)) 
   (if (? x sorted)
       (contents x)

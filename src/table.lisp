@@ -6,8 +6,13 @@
 
 (defthing col thing
   (summary)
-  (sample))
+  (sample (make-instance 'sample)))
 
+(defmethod adds ((x col) y  &optional (f #'identity))
+  (let ((y (funcall f y)))
+    (add (? x 'summary) y)
+    (add (? x 'sample) y)))
+    
 (defthing cols thing
   (all) (nums) (syms))
 
@@ -18,9 +23,7 @@
   
 (defun defcol (tbl name pos)
   (labels
-      ((summ (s) (make-instance
-                  :summary s
-                  :sample  (make-instance 'sample)))
+      ((summ (s) (make-instance :summary s))
        (num  ()  (summ (make-instance 'num :name name :pos pos)))
        (sym  ()  (summ (make-instance 'sym :name name :pos pos)))
        (doit (col list-of-slots)

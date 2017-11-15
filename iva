@@ -108,7 +108,7 @@ cat<<'EOF'>$Dot
 
 doco() {
      local start=$PWD
-     cd $HOME/gits/withlist/withlisp.github.io
+     cd $HOME/gits/withlisp/withlisp.github.io
      make
      cd $start
 }
