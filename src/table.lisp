@@ -10,8 +10,8 @@
 
 (defmethod adds ((x col) y  &optional (f #'identity))
   (let ((y (funcall f y)))
-    (add (? x 'summary) y)
-    (add (? x 'sample) y)))
+    (add (? x summary) y)
+    (add (? x sample) y)))
     
 (defthing cols thing
   (all) (nums) (syms))
@@ -24,8 +24,8 @@
 (defun defcol (tbl name pos)
   (labels
       ((summ (s) (make-instance :summary s))
-       (num  ()  (summ (make-instance 'num :name name :pos pos)))
-       (sym  ()  (summ (make-instance 'sym :name name :pos pos)))
+       (num  ()  (summ (make-instance 'num :txt  name :pos pos)))
+       (sym  ()  (summ (make-instance 'sym :txt  name :pos pos)))
        (doit (col list-of-slots)
          (dolist (slots list-of-slots)
            (change #'(lambda (slot) (cons col slot))
@@ -39,9 +39,9 @@
       (t   (doit (sym) '((xy all) (xy syms) (x all) (x syms)       ))))))
 
 (defun deftable1 (name cols rows)
-  (let ((tb (make-instance 'tbl :name name :cols cols)))
+  (let ((tb (make-instance 'tbl :txt  name :cols cols)))
     (doitems (col pos cols tb)
       (defcol tb col pos))))
 
-(defmacro deftable (name (&rest cols) &body rows)
-  `(deftable1 ',name ',cols ',rows))
+;(defmacro deftable (name (&rest cols) &body rows)
+ ; `(deftable1 ',name ',cols ',rows))
