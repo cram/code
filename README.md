@@ -1,5 +1,8 @@
 # Data mining, with LISP
 
+![](https://zenodo.org/badge/DOI/10.5281/zenodo.1054269.svg)
+
+
 <img align=right src="http://www.lisperati.com/lisplogo_warning_256.png">
 
 One of my more effective teaching tricks 
