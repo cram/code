@@ -27,7 +27,7 @@
 
 (defmethod print-object ((x sym) src)
   (with-slots (n most mode _ent cnt) x
-    (format src "~a"
+    (format src "~a" 
             `(sym
               (n     . ,n)     (most . ,most)
               (mode . ,mode)   (_ent  . ,_ent)

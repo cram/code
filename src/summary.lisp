@@ -1,4 +1,4 @@
-(load "../src/boot")
+(load   "../src/boot")
 (reload "../src/lib")
 
 (defthing summary thing

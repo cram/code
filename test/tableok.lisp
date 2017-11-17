@@ -1,8 +1,11 @@
 (load   "../src/boot")
 (reload "../src/table")
 
-
-(deftest defcol? ()
+(deftest defcol1! ()
+  "let there be table"
+  (let ((tb (make-instance 'cols))) tb))
+  
+(deftest defcol2! ()
   (let* ((tb   (make-instance 'table))
          (eg  `((aa    $bb $cc dd !ee)
                 (sunny 85 85 FALSE no)

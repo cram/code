@@ -32,7 +32,7 @@
      ,@body))
 
 ;;;;
-(defmacro xslots (obj &rest names)
+(defmacro slots (obj &rest names)
   `(mapcar #'(lambda (name) (cons name (slot-value ,obj name))) ',names))
 
 (defmacro copier (old new &rest fields)

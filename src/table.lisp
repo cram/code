@@ -17,13 +17,17 @@
   (all) (nums) (syms))
 
 (defthing table thing
+  (klasses) (less) (more)
   (xy (make-instance 'cols))
   (x  (make-instance 'cols))
   (y  (make-instance 'cols)))
+
+(defmethod print-object ((x table) src)
+  (format src "~a" `(table ,(slots klasses less more xy x y))))
   
 (defun defcol (tbl name pos)
   (labels
-      ((summ (s) (make-instance :summary s))
+      ((summ (s) (make-instance 'col :summary s))
        (num  ()  (summ (make-instance 'num :txt  name :pos pos)))
        (sym  ()  (summ (make-instance 'sym :txt  name :pos pos)))
        (doit (col list-of-slots)
