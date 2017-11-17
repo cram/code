@@ -1,6 +1,6 @@
 # Data mining, with LISP
 
-![](https://zenodo.org/badge/DOI/10.5281/zenodo.1054269.svg)
+[![](https://zenodo.org/badge/DOI/10.5281/zenodo.1054269.svg](http://doi.org/10.5281/zenodo.1054269)_
 
 
 <img align=right src="http://www.lisperati.com/lisplogo_warning_256.png">
