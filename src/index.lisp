@@ -51,7 +51,7 @@
 ; that, to find  dependents, look  in either `../src` or `../test`. So,
 ; to write new files...
 ;
-; **Step1:** Write a file `src/xxx.lisp` file in `src/`. Ensire its first lines are  
+; **Step1:** Write a file `src/xxx.lisp` file in `src/`. Ensure its first lines are  
 ;
 ;      (load "../src/lib") 
 ;
@@ -87,3 +87,5 @@
 
 (defun relad (file)
   "Load file.lisp it it has not been loaded before")
+
+; That's all!
