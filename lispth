@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+# begin config
+Sbcl="/usr/local/bin/sbcl"
+Test="$HOME/gits/lispth/code/test"
+# end config here
+
+run1 () {
+    local Here="$PWD"
+    cd "$Test"
+    echo ";;;; ../test/${1}ok";
+    time $Sbcl --noinform --disable-debugger --eval "
+      (progn (load \"${1}ok\")
+             (tests)
+             (exit))"
+    cd "$Here"
+}
+filter() {
+    awk '
+      /^Backtrace for/ { m=1    } 
+                       { n += m } 
+                 n> 10 { exit   } 
+       n>=1 && n <= 10 { $0=substr($0,1, 70)
+                         print $0
+                         next
+		       }
+                       { print $0 }'
+}
+run() {
+     if which awk > /dev/null; then
+        run1 "$1"  2>&1 filter
+     else
+        run1 "$1" 
+     fi
+}
+if [ -z "$1" ]; then
+    for i in $Test/*ok.lisp; do
+      j=$(basename $i ok.lisp)
+      printf "\n\n#---| $j |---------------------------\n\n"
+      run $j
+    done
+else
+    run $1
+fi

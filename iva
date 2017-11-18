@@ -140,8 +140,7 @@ ok() {
    echo ";;;; ../test/${1}ok"
    time $Sbcl  --noinform   \
           --disable-debugger  \
-          --eval "(progn (load \"../src/boot\")
-                         (reload \"../test/${1}ok\")
+          --eval "(progn (load \"../test/${1}ok\")
                          (tests) 
                          (exit))" 2>&1 | gawk '
                      /^Backtrace for/ { m=1    } 
