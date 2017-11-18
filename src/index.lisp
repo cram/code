@@ -19,22 +19,37 @@
 ;
 ; ## Installation
 ;
-; - Install `sbcl`. Currently I'm using 1.4.2,
-; - Download and unzip https://github.com/lispth/code/archive/master.zip;
+; The following instructions work for Mac. Probably work for LINUX as well.
+;
+; 1. Install `sbcl`. Currently I'm using 1.4.2,
+; 2. Download and unzip https://github.com/lispth/code/archive/master.zip;
 ;
 ; All the files are now in `src/` and `test/`. Most of the files in `src/X.lisp`
-; have demo code or unit tests in `test/Xok.lisp`. So all files know 
-; where to find its dependents (in either `../src` or `../test`).
+; have demo code or unit tests in `test/Xok.lisp`. 
 ;
-; Edit the file in the root of the distro called `lithp`. Change the following
+; Edit the file in the root of the distro called `lispth`. Change the following
 ; two lines to include the right pathnames.
 ;
-;      # begin config
-;      Sbcl="/usr/local/bin/sbcl"
-;      Test="$HOME/gits/lispth/code/test"
-;      # end config here
+;     ## begin config
+;
+;     # Where is sbcl?
+;     Sbcl="/usr/local/bin/sbcl"
+;     
+;     # Where is the test dir?
+;     Test="$HOME/gits/lispth/code/test"
+;     ## end config here
+;
+; Test the install
+;
+;     sh lithp
+;
+; This should generate lots of output and no crashes.
 ;
 ; ## Writing New Code
+;
+; All these files know 
+; that, to find  dependents, look  in either `../src` or `../test`. So,
+; to write new files...
 ;
 ; **Step1:** Write a file `src/xxx.lisp` file in `src/`. Ensire its first lines are  
 ;
@@ -57,20 +72,10 @@
 ;       (test 0.13 (r2 0.127456)))
 ;
 ; **Step4:** Run the above. Create an `ok` file
-; 
-;     #!/bin/bash
-;     ok () {
-;         local here=$PWD;
-;         cd $Here/test;
-;         echo ";;;; ../test/${1}ok";
-;         time $Sbcl --noinform --disable-debugger --eval "
-;                       (progn (reload \"../test/${1}ok\")
-;                              (tests) 
-;                             (exit))"
-;         cd $here
-;     }
-;     ok $1
 ;
+;     sh lispth xxx
+;
+; That should run the `xxx` file.
 ;
 ; ## Structure
 ;
@@ -82,17 +87,3 @@
 
 (defun relad (file)
   "Load file.lisp it it has not been loaded before")
-
-(defun def
-;
-
-
-(general
-  (boot  ; start up routines. 
-    (does 
-      deftest
-      test
-      tests
-      )
-(table ; table.lisp
-   (has (rows cols

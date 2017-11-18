@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-# begin config
+## begin config
+
+# Where is sbcl?
 Sbcl="/usr/local/bin/sbcl"
+
+# Where is the test dir?
 Test="$HOME/gits/lispth/code/test"
-# end config here
+## end config here
 
 run1 () {
     local Here="$PWD"
