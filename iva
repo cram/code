@@ -108,7 +108,7 @@ cat<<'EOF'>$Dot
 
 doco() {
      local start=$PWD
-     cd $HOME/gits/withlisp/withlisp.github.io
+     cd $HOME/gits/lispth/lispth.github.io
      make
      cd $start
 }
@@ -179,7 +179,7 @@ red=$(tput setaf 1)
 blue=$(tput setaf 6)
 ltyl=$(tput setaf 11)
 white=$(tput setaf 15)
-export PROMPT_COMMAND='echo  -ne "${red}WITH-LISP: ${blue}\033]0;/$(here ../..)/$(here ..)/$(here .)\007${white}";PS1="$(here ../..)/$(here ..)/$(here .) \!> "'
+export PROMPT_COMMAND='echo  -ne "${red}LISPTH: ${blue}\033]0;/$(here ../..)/$(here ..)/$(here .)\007${white}";PS1="$(here ../..)/$(here ..)/$(here .) \!> "'
     
 echo -n "${blue}"
 cat<<-'EOB'

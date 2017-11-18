@@ -26,10 +26,12 @@
         (setf (gethash k (slot-value new 'cnt)) v)))))
 
 (defmethod print-object ((x sym) src)
-  (with-slots (n most mode _ent cnt) x
+  (with-slots (txt pos n most mode _ent cnt) x
     (format src "~a" 
             `(sym
-              (n     . ,n)     (most . ,most)
+              (n     . ,n)     (pos . ,pos)
+              (txt . ,txt)
+              (most . ,most)
               (mode . ,mode)   (_ent  . ,_ent)
               (cnt  . ,(hash-table-count cnt))))))
 
