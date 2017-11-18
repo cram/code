@@ -60,14 +60,14 @@
 ;      (load "../src/lib")
 ;      (reload "../src/xxx")
 ;      
-; **IMPORTANTL** Note the `reload` command: this loads a file, but only if it has not been used before.  
+; **IMPORTANT:** Note the `reload` command: this loads a file, but only if it has not been used before.  
 ; So all your code should start with one `load` command then some `reload` commands. 
 ;
 ; **Step3:** Into `tests/xxxok.lisp`, add multiple `deftest` commands. These functions should have a
 ; a documentation string, then arbitrary LISP code. Any call `test` will iincrement
 ; counters of how many times those tests _pass_ or _fail_.
 ;
-;    (deftest r2! ()
+;     (deftest r2! ()
 ;       "does 'r1' round to 2 decimal places"
 ;       (test 0.13 (r2 0.127456)))
 ;
