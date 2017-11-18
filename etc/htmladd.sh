@@ -2,6 +2,7 @@
 stem=$(basename $1 '.html')
 org=lispth
 
+icon='https://raw.githubusercontent.com/lispth/code/master/etc/img/lambda.ico'
 img='https://avatars1.githubusercontent.com/u/33398802?s=200&v=4'
 
 _docheader() { cat<<EOF
@@ -23,7 +24,7 @@ EOF
 }
 
 str=$(_docheader $stem)
-sed -i'.bak'  's?</head>?<link rel="shortcut icon" type="image/x-icon" href="$img"></head>?1'  $1
+sed -i'.bak'  "s?</head>?<link rel=\"shortcut icon\" type=\"image/x-icon\" href="$icon"></head>?1"  $1
 gawk '/<h1>/ {print str; next} /<.h1>/ {next} {print}' str="$str"  $1 > /tmp/$$
 mv /tmp/$$  $1
      
