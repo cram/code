@@ -1,5 +1,6 @@
-;
-; # Welcome to LISPTH
+(print (eval (read)))
+
+; ## Welcome to LISPTH
 ; 
 ; <a href="http://doi.org/10.5281/zenodo.1054269"><img src=https://zenodo.org/badge/DOI/10.5281/zenodo.1054269.svg></a>
 ;
