@@ -1,0 +1,29 @@
+
+stem=$(basename $1 '.html')
+org=lispth
+
+img='https://avatars1.githubusercontent.com/u/33398802?s=200&v=4'
+
+_docheader() { cat<<EOF
+ <a href="https://github.com/$org/${org}.github.io"><img z-index: 1
+style="position: absolute; top: 0; right: 0; border: 0;" 
+src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" 
+alt="Fork me on GitHub" 
+data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<img width=150 align=right src="$img">
+<p>
+<a href="index.html">home</a> |
+<a href="https://github.com/${org}/code/issues">issues</a> |
+<a href="https://${org}.github.io/LICENSE">license</a> 
+</p>
+<h1> 
+LISPTH: $1
+</h1>
+EOF
+}
+
+str=$(_docheader $stem)
+sed -i'.bak'  's?</head>?<link rel="shortcut icon" type="image/x-icon" href="$img"></head>?1'  $1
+gawk '/<h1>/ {print str; next} /<.h1>/ {next} {print}' str="$str"  $1 > /tmp/$$
+mv /tmp/$$  $1
+     

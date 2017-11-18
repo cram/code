@@ -146,6 +146,7 @@ ul.sections > li > div {
 
 /*---------------------- Jump Page -----------------------------*/
 #jump_to, #jump_page {
+  z-index: 3;
   margin: 0;
   background: white;
   -webkit-box-shadow: 0 0 25px #777; -moz-box-shadow: 0 0 25px #777;

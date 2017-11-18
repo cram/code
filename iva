@@ -152,7 +152,6 @@ ok() {
 						  next 
 						}
                                       1'
-          #--eval "(progn (tests) (exit))" 2>&1 | tee -a some_file  | gawk '/^Backtrace for/ { exit } 1'
    cd $here
 }
 here() { 
