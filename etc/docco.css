@@ -36,8 +36,10 @@
 html { height: 100%; }
 body {
   font-family: "aller-light";
-  font-size: 14px;
-  line-height: 18px;
+  xfont-size: 14px;
+  xline-height: 18px;
+  font-size: 11px;
+  line-height: 16px;
   color: #30404f;
   margin: 0; padding: 0;
   height:100%;
@@ -256,14 +258,16 @@ ul.sections > li > div {
   }
   body {
     background-color: #F5F5FF;
-    font-size: 15px;
-    line-height: 21px;
+    xfont-size: 15px;
+    xline-height: 21px; 
+    font-size: 12px;
+    line-height: 18px;
   }
   pre, tt, code {
     line-height: 18px;
   }
   p, ul, ol {
-    margin: 0 0 15px;
+    margin: 0 0 12px;
   }
 
 
@@ -364,8 +368,10 @@ ul.sections > li > div {
 @media only screen and (min-width: 1025px) {
 
   body {
-    font-size: 16px;
-    line-height: 24px;
+    xfont-size: 16px;
+    xline-height: 24px;    
+    font-size: 13px;
+    line-height: 21px;
   }
 
   #background {

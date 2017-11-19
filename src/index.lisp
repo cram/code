@@ -1,6 +1,6 @@
-(print (eval (read)))
 
-; ## Welcome to LISPTH
+
+;## Welcome to LISPTH
 ; 
 ; <a href="http://doi.org/10.5281/zenodo.1054269"><img src=https://zenodo.org/badge/DOI/10.5281/zenodo.1054269.svg></a>
 ;
@@ -8,6 +8,7 @@
 ;
 ; 1. Give them a reference system in a language they do not know, 
 ; 2. Then make them port that code to a language that they do (e.g. Python).
+;
 ;
 ; By the time that is done:
 ;
@@ -20,7 +21,7 @@
 ;
 ; Share and enjoy.
 ;
-; ## Installation
+;## Installation
 ;
 ; The following instructions work for Mac. Probably work for LINUX as well.
 ;
@@ -48,7 +49,7 @@
 ;
 ; This should generate lots of output and no crashes.
 ;
-; ## Writing New Code
+;## Writing New Code
 ;
 ; All these files know 
 ; that, to find  dependents, look  in either `../src` or `../test`. So,
@@ -80,15 +81,17 @@
 ;
 ; That should run the `xxx` file.
 ;
-; ## Structure
+;## Structure
 ;
-; There are two parts, _background tools_ and _core_
+;There are two parts, _background tools_ and _core_.
 ;
-; ### Background
+; here ehtere
 ;
-; Defined in `boot.lisp`
+;## Metaphor
+;
+;### asdadas
+;
+;asd asd asd asd asda sd asdas
+; as asd asd asd asd asda sdas dasd asd asdasdd
+; saasd as sadas das asdadsdaas 
 
-(defun relad (file)
-  "Load file.lisp it it has not been loaded before")
-
-; That's all!
