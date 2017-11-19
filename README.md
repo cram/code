@@ -5,6 +5,13 @@
 
 <img align=right src="http://www.lisperati.com/lisplogo_warning_256.png">
 
+For current details, see http://git.io/lisp. For an overview, see below.
+
+Note that this code is currently 0.3. Still an itnernal hobby. 
+But I promise to port it to asdf/quicklisp before version 1.0.
+
+-----
+
 One of my more effective teaching tricks 
 (for graduate students) is to:
 
