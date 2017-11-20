@@ -1,3 +1,4 @@
+
 (print
  (deftable fred (aa bb cc dd)
    (sunny 85 85 FALSE no)

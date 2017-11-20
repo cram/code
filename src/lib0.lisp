@@ -1,16 +1,37 @@
 ; Never load this file directly. Instead, use
 ; 
-;     (load "../src/lib")
+;      (load "../src/lib")
 ;
-; 
-
-;;;; strings
+; ---------------
+; ## String Tricks
+;
 (defun nchars (&optional (n 40) (c #\Space))
   (with-output-to-string (s)
     (dotimes (i n)
       (format s "~a" c))))
 
-;;;; macros
+; -----------------
+; ## List tricks
+;
+(defun select (selector-fn facts)
+  "return all list items satisying selector-fn"
+  (remove-if-not selector-fn facts))
+
+(defun visit (fn l)
+  "apply fn to all items in nested lists"
+  (if (atom l)
+      (funcall fn l)
+      (dolist (one l)
+  (visit fn one))))
+
+(defun flatten (l)
+  (let (out)
+    (visit #'(lambda (one) (push one out)) l)
+    (reverse out)))
+
+; ------------------------
+; ## Macro Tricks
+;
 (defmacro aif (test then &optional else)
   `(let ((it ,test))
      (if it ,then ,else)))
@@ -35,18 +56,10 @@
        ((not ,test))
      ,@body))
 
-;;;;
-(defmacro slots (obj &rest names)
-  `(mapcar #'(lambda (name) (cons name (slot-value ,obj name))) ',names))
 
-(defmacro copier (old new &rest fields)
-  `(with-slots ,fields ,old
-     ,@(mapcar #'(lambda (slot)
-                        `(setf (slot-value ,new ',slot) ,slot))
-               fields)
-     ,new))
-
-;;;; maths
+;----------------
+; ## Maths Tricks
+;
 (defun round-to (number precision &optional (what #'round))
     (let ((div (expt 10 precision)))
       (float (/ (funcall what (* number div)) div))))
@@ -55,7 +68,9 @@
 (defun r2 (n) (round-to n 2))
 (defun r0 (n) (round-to n 0))
 
-;;;; conversion
+; ----
+; ## Coercion
+;
 (defun l->a (lst)
   (make-array (length lst) :initial-contents lst))
 
@@ -72,10 +87,25 @@
   (defun s->w (str) (s->x str  #'read))
   (defun s->l (str) (s->x str  #'read-char)))
 
-;;;; Simple access/update to recursive slots in LISP
-;; Tested on defstructs. Should also work on instances.
-;; Tim@menzies.us, Oct 2017 
-;; Builds on some excellent code from "Barmar", https://goo.gl/SQtNHd
+; ----
+; ## Defstruct Tricks
+;
+(defmacro slots (obj &rest names)
+  `(mapcar #'(lambda (name) (cons name (slot-value ,obj name))) ',names))
+
+(defmacro copier (old new &rest fields)
+  `(with-slots ,fields ,old
+     ,@(mapcar #'(lambda (slot)
+                        `(setf (slot-value ,new ',slot) ,slot))
+               fields)
+     ,new))
+
+; -----------------------------
+; ## Class Slot Accessor Tricks
+;
+; Simple access/update to recursive slots in LISP.
+; Builds on some excellent code from "Barmar", https://goo.gl/SQtNHd
+
 (defun change (f obj slots)
   "Use case 1: access path for slots not known till runtime.
    In this case, pass in a function 'f' that will be used to
@@ -85,10 +115,6 @@
       (setf (slot-value obj (car slots))
             (funcall f (slot-value obj (car slots))))))
 
-(defmacro with-place ((slot obj &rest slots) &rest body)
-  `(change #'(lambda (,slot) ,@body)
-            ,obj ',slots))
-
 (defmacro ? (obj first-slot &rest more-slots)
   "From https://goo.gl/dqnmvH.
    Use case 2: access path known at load time.
@@ -96,6 +122,13 @@
   (if (null more-slots)
       `(slot-value ,obj ',first-slot)
       `(? (slot-value ,obj ',first-slot) ,@more-slots)))
+
+(defmacro with-place ((slot obj &rest slots) &rest body)
+  `(change #'(lambda (,slot) ,@body)
+            ,obj ',slots))
+
+; -----------------
+; ## Creation Tricks
 
 (defun defslot  (name form)
   `(,name
@@ -109,6 +142,9 @@
   `(defclass ,x (,parent)
      ,(loop for (x form) in slots collect (defslot x form))))
 
+; ------------------------------------
+; ## Portable Random Number Generator
+;
 
 (let* ((seed0      10013)
        (seed       seed0)
