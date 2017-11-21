@@ -1,17 +1,17 @@
 echo "patching $1"
 
 stem=$(basename $1 '.html')
-org=lispth
+org=cram
 
-icon='https://raw.githubusercontent.com/lispth/code/master/etc/img/lambda.ico'
+icon='https://raw.githubusercontent.com/cram/code/master/etc/img/lambda.ico'
 img='https://avatars1.githubusercontent.com/u/33398802?s=200&v=4'
 
 _docheader() { 
 
-name="LISPTH: $1"
+name="CRAM: $1"
 
 if [[ "$1" == "index" ]]; then
-  name="LISPTH: Data Mining in Lisp"
+    name="CRAM: Data Mining (in Lisp)"
 fi
 
 cat<<EOF

@@ -1,6 +1,6 @@
 
 
-;## Welcome to LISPTH
+;## Welcome to CRAM
 ; 
 ; <a href="http://doi.org/10.5281/zenodo.1054269"><img src=https://zenodo.org/badge/DOI/10.5281/zenodo.1054269.svg></a>
 ;
@@ -26,12 +26,12 @@
 ; The following instructions work for Mac. Probably work for LINUX as well.
 ;
 ; 1. Install `sbcl`. Currently I'm using 1.4.2,
-; 2. Download and unzip https://github.com/lispth/code/archive/master.zip;
+; 2. Download and unzip https://github.com/cram/code/archive/master.zip;
 ;
 ; All the files are now in `src/` and `test/`. Most of the files in `src/X.lisp`
 ; have demo code or unit tests in `test/Xok.lisp`. 
 ;
-; Edit the file in the root of the distro called `lispth`. Change the following
+; Edit the file in the root of the distro called `cram`. Change the following
 ; two lines to include the right pathnames.
 ;
 ;     ## begin config
@@ -40,7 +40,7 @@
 ;     Sbcl="/usr/local/bin/sbcl"
 ;     
 ;     # Where is the test dir?
-;     Test="$HOME/gits/lispth/code/test"
+;     Test="$HOME/gits/lisp/cram/code/test"
 ;     ## end config here
 ;
 ; Test the install
@@ -77,7 +77,7 @@
 ;
 ; **Step4:** Run the above. Create an `ok` file
 ;
-;     sh lispth xxx
+;     sh cram xxx
 ;
 ; That should run the `xxx` file.
 ;

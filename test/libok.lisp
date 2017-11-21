@@ -1,5 +1,6 @@
-(load "../src/boot")
-(reload "../src/lib")
+(in-package :cram)
+
+(ensure "../src/lib")
 
 (deftest chars! ()
     "seeking 3 characters"
@@ -65,3 +66,5 @@
     (reset-seed)
     (setf two  (round-to (randf) 5))
     (test one two)))
+
+(tests)
