@@ -11,7 +11,7 @@ _docheader() {
 name="CRAM: $1"
 
 if [[ "$1" == "index" ]]; then
-    name="CRAM: Data Mining (in Lisp)"
+    name="CRAM:<br>Studying Data Mining (in Lisp)"
 fi
 
 cat<<EOF

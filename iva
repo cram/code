@@ -118,10 +118,30 @@ install() {
   sudo npm update
   sudo npm install -g docco
   brew install sbcl # sbcl > 1.2
-  brew install gawk
+  brew install gawk  
+  if [ ! -d "$HOME/quicklisp" ]; then
+    local here="$PWD"
+    local conf="~/.config/common-lisp/source-registry.conf.d/projects.conf"
+    cat '(:tree (:home "gits/lisp/"))' > "$conf"
+    mkdir $HOME/gits/lisp  
+    cd /tmp
+    curl -O https://beta.quicklisp.org/quicklisp.lisp
+    curl -O https://beta.quicklisp.org/quicklisp.lisp.asc
+    cat <<-EOQ>qlisp.lisp
+      (load "quicklisp")
+      (quicklisp-quickstart:install)
+      (ql:quickload "vecto")
+      (ql:add-to-init-file)
+      (asdf:initialize-source-registry)
+      (quit)
+EOQ
+    sbcl --load qlisp.lisp
+    cd "$here"
+  fi
   brew tap d12frosted/emacs-plus
   brew install emacs-plus
-  brew linkapps emacs-plus
+  brew unlink emacs
+  brew link emacs-plus
 
   if [ -d "$HOME/.emacs.d" ]; then
     echo "No fresh super-emacs unless you first  delete $HOME/.emacs.d"
