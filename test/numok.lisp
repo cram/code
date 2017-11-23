@@ -1,5 +1,5 @@
-(load "../src/boot")
-(reload "../src/num")
+(in-package :cram)
+(needs "../src/num")
 
 (deftest num! ()
   "numbers to statistical summary"

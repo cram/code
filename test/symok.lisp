@@ -1,5 +1,5 @@
-(load "../src/boot")
-(reload "../src/sym")
+(in-package :cram)
+(needs "../src/sym")
 
 (deftest sym! ()
   "Sampling from some syms"

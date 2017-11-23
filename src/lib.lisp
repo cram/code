@@ -30,6 +30,7 @@
 ; ## Macro Tricks
 ;
 (defmacro aif (test then &optional else)
+  "Anaphoric 'if'"
   `(let ((it ,test))
      (if it ,then ,else)))
 
@@ -52,7 +53,6 @@
   `(do ()
        ((not ,test))
      ,@body))
-
 
 ;----------------
 ; ## Maths Tricks

@@ -1,5 +1,6 @@
-(load   "../src/boot")
-(reload "../src/lib")
+(in-package :cram)
+
+(needs "../src/lib")
 
 (defthing summary thing
   (txt "") (pos 0) (n 0) (w 1))

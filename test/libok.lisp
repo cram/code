@@ -1,9 +1,9 @@
 (in-package :cram)
 
-(ensure "../src/lib")
+(needs "../src/lib")
 
 (deftest chars! ()
-    "seeking 3 characters"
+  "seeking 3 characters"
   (test (nchars 3 #\;) ";;;"))
 
 (deftest doitems! ()

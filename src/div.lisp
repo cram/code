@@ -1,6 +1,6 @@
-(load "../src/boot")
-(reload "../src/lib")
-(reload "../src/num")
+(in-package :cram)
+(needs "../src/lib"
+       "../src/num")
 
 ;;;;;;;;;;;;;;;;;
 (defun ranges1 (lst &key  (n 20) (epsilon 1) (f #'identity))

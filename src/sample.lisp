@@ -1,10 +1,6 @@
-#|
+(in-package :cram)
 
-## Loading
-
-|#
-(load "../src/boot")
-(reload "../src/summary")
+(needs "../src/summary")
 #|
 
 ## Samples

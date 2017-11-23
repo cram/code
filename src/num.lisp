@@ -1,5 +1,5 @@
-(load   "../src/boot")
-(reload "../src/summary")
+(in-package :cram)
+(needs "../src/summary")
 
 (defthing num summary
   (mu 0) (m2 0) (sd 0) (rank 0)

@@ -1,4 +1,3 @@
-
 (defpackage :cram
     (:use :common-lisp)
     (:export #:tests))
@@ -8,7 +7,8 @@
 (format t ";;; ../test/boot~%")
 
 (let ((seen))  
-  (defun ensure (&rest lst)
+  (defun needs (&rest lst)
+    #+local
     (dolist (f lst)
       (when (not (member f seen :test #'equalp))
         (push f seen)

@@ -1,5 +1,7 @@
-(load     "../src/boot")
-(reload "../src/sample")
+(in-package :cram)
+
+(needs "../src/boot"
+       "../src/sample")
 
 (deftest sample! ()
   (reset-seed)

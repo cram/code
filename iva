@@ -112,7 +112,9 @@ doco() {
      make
      cd $start
 }
-
+ok() {
+  $Here/ok $1
+}
 install() {
   brew install npm
   sudo npm update
@@ -153,25 +155,6 @@ EOQ
      mv super-emacs/.emacs.d ~/
      echo "now edit $HOME/.emacs.d/init.el to load etc/timmacs.el"
   fi
-}
-ok() {
-   local here=$PWD
-   cd $Here/test
-   echo ";;;; ../test/${1}ok"
-   time $Sbcl  --noinform   \
-          --disable-debugger  \
-          --eval "(progn (load \"../test/${1}ok\")
-                         (tests) 
-                         (exit))" 2>&1 | gawk '
-                     /^Backtrace for/ { m=1    } 
-                                      { n += m } 
-                                n> 10 { exit   } 
-                                n>=1 && n <= 10 { $0=substr($0,1, 70)
-				                  print $0
-						  next 
-						}
-                                      1'
-   cd $here
 }
 here() { 
 	cd $1; basename $PWD 
