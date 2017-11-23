@@ -17,6 +17,14 @@
 (defun sym* (lst &optional (f #'identity))
   (adds (make-instance 'sym) lst f))
 
+?"
+# adasdsa 
+
+- ssadf
+- asddas
+
+"
+
 (defmethod copy ((old sym))
   (with-slots (cnt) old
     (let ((h   (make-hash-table))
