@@ -7,7 +7,8 @@
 
 (defconstant *banner*
   "http://files.vladstudio.com/joy/infinity_2_blue/wall/vladstudio_infinity_2_blue_600x150.jpg"
-)
+  )
+; need to give myself 2 columns: https://stackoverflow.com/questions/5645986/two-column-div-layout-with-fluid-left-and-fixed-right-column 
 (defconstant *header*
 "<html>
 <head>
