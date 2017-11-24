@@ -106,25 +106,30 @@ pre { white-space: pre; background-color: #f8f8f8; border: 1px dotted blue; font
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defmacro while (test &body body)
+  "while loop"
   `(do ()
        ((not ,test))
      ,@body))
 
 (defun prefixp (line str &aux (max (length str)))
+  "does a string start with certain prefix?"
   (and (>= (length line) max)
        (string= str (subseq line 0 max))))
 
 (defun prune (lst)
+  "kill start items that are all blank lines"
   (while (and lst (zerop (length (car lst))))
     (pop lst))
   lst)
 
 (defun prep (lst)
+  "kill blank lines at start and end"
   (prune  lst)
   (prune (reverse lst))
   (reverse lst))
 
 (defun command-line ()
+  "get the command line"
   (mapcar 'read-from-string
           (cdr #+clisp ext:*args*
                #+sbcl sb-ext:*posix-argv*
@@ -136,7 +141,10 @@ pre { white-space: pre; background-color: #f8f8f8; border: 1px dotted blue; font
                #+lispworks sys:*line-arguments-list*)))   
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-(defun codetext (ins outs &aux cache finale line)
+(defun body (ins outs &aux cache finale line)
+  "Alternate between rendering code, then text lines.
+   Text lines start and end witn '#|' and '|#'.
+   Render text lines using markdown."
    (labels ((code ()
               (when cache
                 (format outs
@@ -160,21 +168,23 @@ pre { white-space: pre; background-color: #f8f8f8; border: 1px dotted blue; font
              (t                    (push line cache))))
      (funcall finale)))
 
-(defun main1  (stem input-stream output-stream)
+(defun page  (stem input-stream output-stream)
+  "Render page header, body, footer"
   (format  output-stream *header* stem *style* *banner*)
-  (codetext input-stream output-stream)
+  (body input-stream output-stream)
   (princ "</div></body></html>" output-stream))
 
-(defun main  (stem)
+(defun control (stem)
   (let* ((lisp (string-downcase (format nil "~a.lisp"      stem)))
          (html (string-downcase (format nil "docs/~a.html" stem))))
     (when (probe-file lisp)
       (with-open-file
-          (input-stream lisp :direction :input)
-        (with-open-file
-            (output-stream html :direction :output
-                           :if-exists :supersede
-                           :if-does-not-exist :create)
-            (main1 stem input-stream output-stream))))))
+       (input-stream lisp :direction :input)
+       (with-open-file
+        (output-stream html :direction :output
+                       :if-exists :supersede
+                       :if-does-not-exist :create)
+        (page stem input-stream output-stream))))))
 
-(mapc #'main (command-line))
+;; process command line files.
+(mapc #'control (command-line))
