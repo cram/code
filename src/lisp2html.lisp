@@ -5,6 +5,9 @@
 (defpackage #:lisp2html (:use #:cl))
 (in-package #:lisp2html)
 
+(defconstant *banner*
+  "http://files.vladstudio.com/joy/infinity_2_blue/wall/vladstudio_infinity_2_blue_600x150.jpg"
+)
 (defconstant *header*
 "<html>
 <head>
@@ -16,7 +19,7 @@
 <body>
 <div class=body>
 <center>
-<img src=\"http://files.vladstudio.com/joy/infinity_2_blue/wall/vladstudio_infinity_2_blue_600x150.jpg\" width=790>
+<img src=\"~a\" width=790>
 </center>
 
 ")
@@ -157,7 +160,7 @@ pre { white-space: pre; background-color: #f8f8f8; border: 1px dotted blue; font
      (funcall finale)))
 
 (defun main1  (stem input-stream output-stream)
-  (format  output-stream *header* stem *style*)
+  (format  output-stream *header* stem *style* *banner*)
   (codetext input-stream output-stream)
   (princ "</div></body></html>" output-stream))
 
