@@ -82,7 +82,7 @@ body {  font-size: small;
  }
 div.body {
     background: white;
-    border: solid 1px blackxs;
+    border: solid 1px black;
     width: 800px;
     xheight: 100px;
     xbackground-color: red;
