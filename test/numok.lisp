@@ -35,4 +35,17 @@
       (print y)
       (print z))))
     
-    
+(deftest many! (&aux all)   
+  "add many numbers"
+  ;(reset-seed 1)
+  (let ((x (make-instance 'num)))
+    (dotimes (i 1000)
+      (let ((x1 (randf)))
+        (push x1 all)
+        (add x x1)))
+    (setf all (sort all #'<))
+    (format t ":med ==> ~a~%" (nth 500 all))
+    (format t "==> ~a~%" (? x n))
+    (format t "==> ~a ~a~%" 
+            (? x any n)
+            (median (? x any)))))

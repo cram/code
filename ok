@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 
-# sbcl --noinform --eval "(progn (load \"../src/boot\") (load \"../test/libok\") (exit))"
-
 ## begin config
 
-# Where is sbcl?
 Sbcl="/usr/local/bin/sbcl"
-
-# Where is the test dir?
 Test="$HOME/gits/lisp/cram/code/test"
+
 ## end config here
 
 run1 () {
@@ -24,7 +20,7 @@ run1 () {
 }
 filter() {
     awk '
-      /^Backtrace for/ { m=1    } 
+      /^Backtrace for/ { m  = 1 } 
                        { n += m } 
                  n> 10 { exit   } 
        n>=1 && n <= 10 { $0=substr($0,1, 70)

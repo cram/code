@@ -9,10 +9,6 @@
 ; Keep stats on a column, plus a small `sample` of
 ; any of the numbers.
 
-(defthing col thing
-  (has)
-  (any  (make-instance 'sample)))
-
 (defmethod print-object ((x col) src)
   (format src "~a" `(col  ,(slots x has any))))
 
@@ -72,9 +68,8 @@
   
 (defun defcol (tbl name pos)
   (labels
-      ((summ (s) (make-instance 'col :has s))
-       (num  ()  (summ (make-instance 'num :txt  name :pos pos)))
-       (sym  ()  (summ (make-instance 'sym :txt  name :pos pos)))
+      ((num () (make-instance 'num :txt  name :pos pos))
+       (sym () (make-instance 'sym :txt  name :pos pos))
        (doit (col list-of-slots)
          (dolist (slots list-of-slots col)
            (change #'(lambda (slot) (cons col slot))

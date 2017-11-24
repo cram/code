@@ -12,7 +12,7 @@ RLeservoir sampling.
 (defthing sample summary
   (now   -1)
   (sorted nil)
-  (most   64)
+  (most   256)
   (all))
 
 (defmethod initialize-instance :after ((x sample) &key)

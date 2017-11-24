@@ -1,14 +1,18 @@
 (in-package :cram)
-(needs "../src/summary")
+(needs "../src/summary"
+       "../src/sample")
+
 
 (defthing num summary
+  (any (make-instance 'sample))
   (mu 0) (m2 0) (sd 0) (rank 0)
   (lo most-positive-fixnum)
   (hi most-negative-fixnum))
 
 (defmethod add1 ((x num) y)
-  (with-slots (hi lo n mu m2 sd) x
+  (with-slots (hi lo n mu m2 sd any) x
     (let* ((delta (- y mu)))
+      (add any y)
       (setf lo (min lo y)
             hi (max hi y)
             mu (+ mu (/ delta n))
