@@ -10,6 +10,7 @@
   (hi most-negative-fixnum))
 
 (defmethod add1 ((x num) y)
+  (print `(numadd1 ,y))
   (with-slots (hi lo n mu m2 sd any) x
     (let* ((delta (- y mu)))
       (add any y)
@@ -28,13 +29,15 @@
     (copier old new n sd mu m2 lo hi)))
      
 (defmethod print-object ((x num) src)
-  (with-slots (n pos txt w mu m2 lo hi) x
+  (with-slots (n pos txt w mu sd lo hi) x
     (format src "~a"
-      `((n  . ,n)  (pos . ,pos) (txt . ,txt) (w  . ,w)
-        (mu . ,mu) (m2  . ,m2)  (lo  . ,lo)  (hi . ,hi)))))
+     `(nump
+       (n  . ,n)  (pos . ,pos) (txt . ,txt) (w  . ,w)
+       (mu . ,mu) (sd . ,sd)  (lo  . ,lo)  (hi . ,hi)))))
   
-(defmethod nsd ((x num) &optional (n 1))
-  (* (slot-value x 'sd) (/ (slot-value x 'n) n)))
+(defmethod xpect ((x num) &optional (all 1))
+  "return stadnard deviation, expressed as a ratio of 'all'"
+  (* (slot-value x 'sd) (/ (slot-value x 'n) all)))
 
 (defmethod any ((x num) &aux x1 x2 (w 1))
   (while (>= w 1)

@@ -1,9 +1,9 @@
 ;;;; cram.asd
 
 (asdf:defsystem #:cram
-  :description "Describe cram here"
-  :author "Your Name <your.name@example.com>"
-  :license "Specify license here"
+  :description "Data mining, refactored, for teaching and research"
+  :author "Tim Menzies <tim@menzies.us>"
+  :license "MIT"
   :serial t
   :components ((:file "package")
                (:file "cram")))

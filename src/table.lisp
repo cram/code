@@ -1,26 +1,9 @@
-(load   "../src/boot")
-(reload "../src/lib")
-(reload "../src/num")
-(reload "../src/sym")
-(reload "../src/sample")
+(in-package :cram)
+(uses "../src/lib"
+      "../src/num"
+      "../src/sym"
+      "../src/sample")
 
-;## Col
-;
-; Keep stats on a column, plus a small `sample` of
-; any of the numbers.
-
-(defmethod print-object ((x col) src)
-  (format src "~a" `(col  ,(slots x has any))))
-
-(defmethod adds ((x col) y  &optional (f #'identity))
-  (let ((y (funcall f y)))
-    (adds (? x has) y)
-    (adds (? x any) y)))
-
-(defmethod add ((x col) y &optional (f #'identity))
-  (let ((y (funcall f y)))
-    (add (? x has) y)
-    (add (? x any) y)))
 
 ;-----
 ;## Cols
@@ -53,7 +36,7 @@
   (x  (make-instance 'cols))
   (y  (make-instance 'cols)))
 
-(defmethod add ((tb table) (row cons) &optional filter)
+(defmethod add ((tb table) row  &optional (filter #'identity))
   (declare  (ignore filter))
   (push (mapcar  #'add  (? tb xy all) row)
         (? tb rows)))
@@ -64,7 +47,10 @@
 
 (defmethod print-object ((obj table) src)
   (let ((details (slots obj klasses less more xy x y)))
-    (format src "~a" `(table ,details))))
+    (format src "~a"
+            (list 'table
+                  `(rows ,(length (? obj rows)))
+                  `(cols ,details)))))
   
 (defun defcol (tbl name pos)
   (labels
@@ -72,7 +58,7 @@
        (sym () (make-instance 'sym :txt  name :pos pos))
        (doit (col list-of-slots)
          (dolist (slots list-of-slots col)
-           (change #'(lambda (slot) (cons col slot))
+           (change #'(lambda (slot) (tail-append slot col))
                    tbl slots))))
     (case
         (char (symbol-name name) 0)
@@ -82,9 +68,14 @@
       (#\! (doit (sym) '((xy all) (xy syms) (y all) (y syms) (klasses))))
       (t   (doit (sym) '((xy all) (xy syms) (x all) (x syms)       ))))))
 
-(defun table0 (name spec)
-  (let ((tb (make-instance 'table)))
+(defun table0 (name rows)
+  (let ((tb (make-instance 'table))
+        (row1 (pop  rows)))
     (setf (? tb name) name
-          (? tb spec) spec)
-    (doitems (txt pos spec tb)
-        (defcol tb txt pos))))
+          (? tb spec) row1)
+    (doitems (txt pos row1  tb)
+        (defcol tb txt pos))
+    (adds tb rows)
+    tb
+    
+    ))

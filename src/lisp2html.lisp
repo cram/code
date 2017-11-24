@@ -100,7 +100,7 @@ div.body {
 /**
  * Inspired by github's default code highlighting
  */
-pre { white-space: pre; background-color: #f8f8f8; border: 1px dotted blue; font-size: 11px; line-height: 12px; overflow: auto; padding: 6px 10px; border-radius: 3px; margin-left: 5px; margin-right: 5px; }
+pre { white-space: pre; background-color: #f8f8f8; border: 1px dotted blue; font-size: 11px; line-height: 12px; overflow: auto; padding: 6px 10px; border-radius: 3px; margin-left: 25px; margin-right: 25px; }
 
 ")
 

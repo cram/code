@@ -29,38 +29,36 @@
    :n n :epsilon epsilon :f f))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun superranges1 (arr f e &aux out)
+(defun superranges1 (arr what epsilon &aux out)
   "split array at point that minimized expected value of sd"
-  (macrolet ((at (n v) `(slot-value (aref arr ,n) ,v)))
-    (labels
-        ((sd  (b4 z)
-           (* (at z 'sd)
-              (/ (at z 'n) (at b4 'z))))                        
-         (all (lo hi &aux (out (make-instance 'num)))
-             (loop for j from lo to hi do
-                  (adds out (aref arr j) f)
-                return out))
-         (argmin (lo hi &aux cut (best most-positive-fixnum))
-           (if (< lo hi)
-               (let ((b4 (all lo hi)))
-                 (loop for j from lo to (1- hi) do
-                      (let* ((l   (all 0      j))
-                             (r   (all (1+ j) hi))
-                             (now (+ (sd b4 l) (sd b4 r))))
-                        (if (< now best)
-                            (if (> (- (at r 'mu) (at l 'mu)) e)
-                                (setf best now
-                                      cut  j)))))))
-           cut)
-         (recurse (lo cut hi)
-           (split lo        cut)
-           (split (1+ cut)  hi))
-         (split (lo hi)
-           (aif (argmin lo hi) 
-                (recurse lo it hi)
-                (push (a->l arr :lo lo :hi hi) out)))
-      (split 0 (1- (length arr)))
-      out)))
+  (labels
+      ((all (lo hi &aux (out (make-instance 'num )))
+         (loop for j from lo to hi do
+              (adds out (aref arr j) what)
+            return out))
+       (argmin (lo hi &aux cut (best most-positive-fixnum))
+         (if (< lo hi)
+             (let ((b4 (all lo hi)))
+               (loop for j from lo to (1- hi) do
+                    (let* ((l   (all 0      j))
+                           (r   (all (1+ j) hi))
+                           (now (+ (xpect l b4)
+                                   (xpect r b4))))
+                      (if (< now best)
+                          (if (> (- (? r mu) (? l mu))
+                                 epsilon)
+                              (setf best now
+                                    cut  j)))))))
+         cut)
+       (recurse (lo cut hi)
+         (split lo        cut)
+         (split (1+ cut)  hi))
+       (split (lo hi)
+         (aif (argmin lo hi) 
+              (recurse lo it hi)
+              (push (a->l arr :lo lo :hi hi) out))))
+    (split 0 (1- (length arr)))
+    out))
 
 (defun superranges (lst &key (n 20) (xepsilon 0) (cohen 0.2)
                           (x #'first) (y #'second))
@@ -68,7 +66,9 @@
    Returns an array of array of numbers"
   (let* ((arr      (l->a
                     (ranges lst :n n :epsilon xepsilon :f x)))
+         (n        (make-instance 'num)) ; XXX need two levesl of add here
          (yepsilon (* cohen
                       (slot-value (num* lst y) 'sd))))
-    (superranges1 arr y yepsilon)))
+    ;(superranges1 arr y yepsilon)
+    ))
 

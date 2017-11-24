@@ -62,7 +62,7 @@
 ; **Step2:** Write a second file `tests/xxxok.lisp'. Ensure its first lines are
 ; 
 ;      (load "../src/lib")
-;      (reload "../src/xxx")
+;      (uses "../src/xxx")
 ;      
 ; **IMPORTANT:** Note the `reload` command: this loads a file, but only if it has not been used before.  
 ; So all your code should start with one `load` command then some `reload` commands. 

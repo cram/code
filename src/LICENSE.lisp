@@ -1,4 +1,5 @@
-;
+(in-package :cram)
+                                        ;
 ; MIT License
 ;
 ; Copyright (c) 2017 LISPTH, tim@menzies.us

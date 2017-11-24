@@ -17,13 +17,6 @@
 (defun sym* (lst &optional (f #'identity))
   (adds (make-instance 'sym) lst f))
 
-?"
-# adasdsa 
-
-- ssadf
-- asddas
-
-"
 
 (defmethod copy ((old sym))
   (with-slots (cnt) old
@@ -36,7 +29,7 @@
 (defmethod print-object ((x sym) src)
   (with-slots (txt pos n most mode _ent cnt) x
     (format src "~a" 
-            `(sym
+            `(symp
               (n     . ,n)     (pos . ,pos)
               (txt . ,txt)
               (most . ,most)
@@ -64,7 +57,9 @@
       (setf  v   (caar lst)
              k   (cdar lst)
              n   (- n v)
-             lst (cdr lst)))
-             
+             lst (cdr lst)))          
     k))
 
+(defmethod xpect ((x ent) &optional (all 1))
+  "return entropy, expressed as a ratio of 'all'"
+  (* (ent x) (/ (slot-value x 'n) all)))

@@ -30,6 +30,9 @@
     (visit #'(lambda (one) (push one out)) l)
     (reverse out)))
 
+(defun tail-append (lst x)
+  (append lst (list x)))
+
 ; ------------------------
 ; ## Macro Tricks
 ;

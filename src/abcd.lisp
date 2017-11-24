@@ -1,3 +1,6 @@
+(in-package :cram)
+
+
 (defstruct result  target (a 0) (b 0) (c 0) (d 0) acc pf prec pd f g)
 
 (defmethod print-object ((r result) str)
