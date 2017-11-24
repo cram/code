@@ -1,5 +1,5 @@
 (in-package :cram)
-(needs "../src/div")
+(uses "../src/div")
 
 (deftest ranges! ()
   "Want 3, then 5,  lists"

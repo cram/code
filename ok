@@ -11,7 +11,7 @@ run1 () {
     local Here="$PWD"
     cd "$Test"
     time $Sbcl --noinform --disable-debugger --eval "
-        (progn (push :local *features*)
+        (progn (push :playing *features*)
                (mapc #'load '(  \"../src/boot\"
                                 \"../test/${1}ok\"
                                 \"../src/tests\"))

@@ -1,6 +1,6 @@
 (in-package :cram)
-(needs "../src/summary"
-       "../src/sample")
+(uses "../src/summary"
+      "../src/sample")
 
 
 (defthing num summary

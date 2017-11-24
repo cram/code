@@ -1,5 +1,5 @@
 (in-package :cram)
-(needs "../src/sym")
+(uses "../src/sym")
 
 (deftest sym! ()
   "Sampling from some syms"

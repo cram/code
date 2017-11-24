@@ -7,8 +7,8 @@
 (format t ";;; ../test/boot~%")
 
 (let ((seen))  
-  (defun needs (&rest lst)
-    #+local
+  (defun uses (&rest lst)
+    #+playing
     (dolist (f lst)
       (when (not (member f seen :test #'equalp))
         (push f seen)

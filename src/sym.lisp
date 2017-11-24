@@ -1,5 +1,5 @@
 (in-package :cram)
-(needs "../src/summary")
+(uses "../src/summary")
 
 (defthing sym summary
   (most 0) (mode) (_ent) (_w)

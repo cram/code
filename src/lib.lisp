@@ -7,6 +7,10 @@
     (dotimes (i n)
       (format s "~a" c))))
 
+(defun dot (&optional (c "."))
+  (princ c) 
+  (finish-output))
+
 ; -----------------
 ; ## List tricks
 ;

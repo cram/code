@@ -1,6 +1,6 @@
 (in-package :cram)
 
-(needs "../src/lib")
+(uses "../src/lib")
 
 (deftest chars! ()
   "seeking 3 characters"

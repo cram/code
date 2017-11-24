@@ -1,6 +1,6 @@
 (in-package :cram)
 
-(needs "../src/summary")
+(uses "../src/summary")
 
 (defthing remedian summary
   (all)

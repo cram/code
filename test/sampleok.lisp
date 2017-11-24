@@ -1,7 +1,6 @@
 (in-package :cram)
-
-(needs "../src/boot"
-       "../src/sample")
+(uses "../src/boot"
+      "../src/sample")
 
 (deftest sample! ()
   (reset-seed)

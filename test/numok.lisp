@@ -1,5 +1,5 @@
 (in-package :cram)
-(needs "../src/num")
+(uses "../src/num")
 
 (deftest num! ()
   "numbers to statistical summary"
