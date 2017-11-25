@@ -40,41 +40,38 @@
            (dolist (item lst)
              (add out (funcall f item)))))
     out))
- 
+
+; XXX cache the ranges
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (Defun superranges1 (arr fn epsilon &aux out)
   "split array at point that minimized expected value of sd"
   (labels
-      ((all (lo hi)
-         (range-sum arr :lo lo :hi hi :f fn))
-       (argmin (lo hi &aux cut (best most-positive-fixnum))
+      ((argmin (lo hi &aux cut (best most-positive-fixnum))
          (when (< lo hi)
-           (let ((b4 (all lo hi)))
+           (let ((b4 (range-sum arr :lo lo :hi hi  :f fn)))
              (loop for j from (1+ lo) to hi do
-                  (let* ((l   (all lo  j))
-                         (r   (all j  hi))
+                  (let* ((l   (range-sum arr :lo lo :hi j  :f fn))
+                         (r   (range-sum arr :lo j  :hi hi :f fn))
                          (now (+ (xpect l (? b4 n))
                                  (xpect r (? b4 n)))))
                     (if (and (< now best)
-                             (> (? r mu) (? l mu)
+                             (> (- (? r mu) (? l mu))
                                 epsilon))
-                            (setf best now
-                                  cut  j))))))
+                        (setf best now
+                              cut  j))))))
          cut)
        (recurse (lo cut hi)
          (split lo  cut)
-         (split cut hi))
-       (stop (lo hi)
-         (push (a->l arr :lo lo :hi hi) out))       
+         (split cut hi))   
        (split (lo hi)
          (let ((cut (argmin lo hi)))
            (if cut 
                (recurse lo cut hi)
-               (stop lo hi)))))
+               (push (a->l arr :lo lo :hi hi) out)))))
     (split 0 (length arr))
     out))
 
-(defun superranges (lst &key (n        (sqrt (length lst)))
+(defun superranges (lst &key (n        (sqrt  (length lst)))
                              (xepsilon 1)
                              (cohen    0.2)
                              (x        #'first)
