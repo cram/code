@@ -71,13 +71,19 @@
     (split 0 (length arr))
     out))
 
-(defun superranges (lst &key (n        (sqrt  (length lst)))
+(defun bins (lst)
+  (if (< (/ (length lst) 16))
+      10
+      16))
+
+(defun superranges (lst &key (n        (bins lst))
                              (xepsilon 1)
                              (cohen    0.2)
                              (x        #'first)
                              (y        #'second))
   "Consider combining the splits found 'ranges' if the y-values
    in adjacent splits are too similar. Returns an array of array of numbers"
+  (print n)
   (let* ((unsup (ranges lst :n n :epsilon xepsilon :f x))
          (arr   (l->a unsup))
          (nums  (range-sum arr :f y))
