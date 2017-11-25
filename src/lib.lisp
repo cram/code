@@ -78,8 +78,8 @@
 (defun l->a (lst)
   (make-array (length lst) :initial-contents lst))
 
-(defun a->l (a &key (start 0) (stop (1- (length a))))
-  (coerce (subseq a start stop) 'list))
+(defun a->l (a &key (lo 0) (hi (length a)))
+  (coerce (subseq a lo hi) 'list))
 
 (labels
     ((s->x (str &optional (reader #'read-char))

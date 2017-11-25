@@ -14,9 +14,7 @@
   (assert nil () "norm1 should be implemented by subclass"))
 
 (defmethod add ((x summary) y &optional (f #'identity))
-  (print `(addsyn y ,y  f ,f y1 ,(funcall f y) raw ,(second y)))
   (let ((y1 (funcall f y)))
-    (print `(add-summary ,y y1 ,y1))
     (with-slots (n) x
       (when (not (eql y1 #\?))
         (incf n)

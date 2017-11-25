@@ -10,7 +10,6 @@
   (hi most-negative-fixnum))
 
 (defmethod add1 ((x num) y)
-  (print `(numadd1 ,y))
   (with-slots (hi lo n mu m2 sd any) x
     (let* ((delta (- y mu)))
       (add any y)
