@@ -32,7 +32,8 @@
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmacro with-ranges ((one arr &key (f #'identity) (lo 0) hi out) &body body)
+(defmacro with-array-list-items
+    ((one arr &key (f #'identity) (lo 0) hi out) &body body)
   "Iterate over the items in an array of list of items.
    Optionally, Items are filtered via a function 'f'.
    Consistent with subseq, this runs from lo to hi-1"
@@ -52,7 +53,8 @@
   "split array at point that minimized expected value of sd"
   (labels
       ((all (lo hi &aux (out (make-instance 'num )))
-         (with-ranges (one arr :f what :out out :lo lo :hi hi)
+         (with-array-list-items
+             (one arr :f what :out out :lo lo :hi hi)
            (add out one)))
        (argmin (lo hi &aux cut (best most-positive-fixnum))
          (when (< lo hi)
@@ -89,7 +91,8 @@
                     (ranges lst :n n :epsilon xepsilon :f x)))
          (n        (make-instance 'num)) ; XXX need two levesl of add here
         (yepsilon  (* cohen
-                      (with-ranges (yval arr :f y :out (? n sd))
+                      (with-array-list-items
+                          (yval arr :f y :out (? n sd))
                         (add n yval))))
          )
     (print yepsilon)
