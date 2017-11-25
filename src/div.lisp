@@ -24,19 +24,23 @@
                    (ranges1 lst :n n :epsilon epsilon :f f))))))
 
 (defun ranges (lst &key  (n 20) (epsilon 1) (f #'identity))
-  (ranges1
-   (sort lst #'(lambda (a b)  (< (funcall f a) (funcall f b))))
-   :n n :epsilon epsilon :f f))
-
-
+  (mapcar
+   #'reverse
+   (ranges1
+    (sort lst #'(lambda (a b)  (< (funcall f a) (funcall f b))))
+    :n n :epsilon epsilon :f f)))
+  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmacro with-ranges ((one arr &key (f #'identity) (lo 0) hi out) &body body)
+  "Iterate over the items in an array of list of items.
+   Optionally, Items are filtered via a function 'f'.
+   Consistent with subseq, this runs from lo to hi-1"
   (let ((i     (gensym))
         (two   (gensym))
         (three (gensym)))
     `(progn
-       (loop for ,i from ,lo to (or ,hi (1- (length ,arr))) do
+       (loop for ,i from ,lo to (1- (or ,hi (length ,arr))) do
             (let ((,three (aref ,arr ,i)))
               (dolist (,two ,three)
                 (let ((,one (funcall ,f ,two)))    
@@ -48,30 +52,32 @@
   "split array at point that minimized expected value of sd"
   (labels
       ((all (lo hi &aux (out (make-instance 'num )))
-         (with-ranges (one arr :f  what :out out :lo lo :hi (1- hi))
+         (with-ranges (one arr :f what :out out :lo lo :hi hi)
            (add out one)))
        (argmin (lo hi &aux cut (best most-positive-fixnum))
-         (if (< lo hi)
-             (let ((b4 (all lo hi)))
-               (loop for j from lo to (1- hi) do
-                    (let* ((l   (all 0      j))
-                           (r   (all (1+ j) hi))
-                           (now (+ (xpect l (? b4 n))
-                                   (xpect r (? b4 n)))))
-                      (if (< now best)
-                          (if (> (- (? r mu) (? l mu))
-                                 epsilon)
-                              (setf best now
-                                    cut  j)))))))
+         (when (< lo hi)
+           (let ((b4 (all lo hi)))
+             (loop for j from (1+ lo) to hi do
+                  (let* ((l   (all lo j))
+                         (r   (all j hi))
+                         (now (+ (xpect l (? b4 n))
+                                 (xpect r (? b4 n)))))
+                    (if (< now best)
+                        (if (> (- (? r mu) (? l mu))
+                               epsilon)
+                            (setf best now
+                                  cut  j)))))))
          cut)
        (recurse (lo cut hi)
-         (print `(cut ,lo ,cut ,hi))
-         (split lo       cut)
-         (split (1+ cut)   hi))
+         (split lo  cut)
+         (split cut hi))
+       (stop (lo hi)
+         (push (a->l arr :lo lo :hi hi) out))       
        (split (lo hi)
-         (aif (argmin lo hi) 
-              (recurse lo it hi)
-              (push (a->l arr :lo lo :hi hi) out))))
+         (let ((cut (argmin lo hi)))
+           (if cut 
+               (recurse lo cut hi)
+               (stop lo hi)))))
     (split 0 (length arr))
     out))
 
@@ -88,6 +94,6 @@
          )
     (print yepsilon)
 ;    (print yepsilon)
-    (print (superranges1 arr y yepsilon))
+    (print (first (superranges1 arr y yepsilon)))
     ))
 
