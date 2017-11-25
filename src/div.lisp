@@ -32,42 +32,34 @@
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmacro with-array-list
-    ((one arr &key (f #'identity) (lo 0) hi out) &body body)
-  "Iterate over the items in an array of list of items.
-   Optionally, items are filtered via a function 'f'.
-   Consistent with subseq, this runs from lo to hi-1"
-  (let ((i     (gensym))
-        (two   (gensym))
-        (three (gensym)))
-    `(progn
-       (loop for ,i from ,lo to (1- (or ,hi (length ,arr))) do
-            (let ((,three (aref ,arr ,i)))
-              (dolist (,two ,three)
-                (let ((,one (funcall ,f ,two)))    
-                  ,@body))))
-       ,out)))
+(defun range-sum (arr &key (klass 'num) (f #'identity)
+                        (lo 0) (hi (length arr)))
+  (let ((out (make-instance klass)))
+    (loop for i from lo to (1- hi) do
+         (let ((lst (aref arr i)))
+           (dolist (item lst)
+             (add out (funcall f item)))))
+    out))
  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun superranges1 (arr fn epsilon &aux out)
+(Defun superranges1 (arr fn epsilon &aux out)
   "split array at point that minimized expected value of sd"
   (labels
-      ((all (lo hi &aux (out (make-instance 'num )))
-         (with-array-list (z arr :f fn :out out :lo lo :hi hi)
-           (add out z)))
+      ((all (lo hi)
+         (range-sum arr :lo lo :hi hi :f fn))
        (argmin (lo hi &aux cut (best most-positive-fixnum))
          (when (< lo hi)
            (let ((b4 (all lo hi)))
              (loop for j from (1+ lo) to hi do
-                  (let* ((l   (all lo j))
-                         (r   (all j hi))
+                  (let* ((l   (all lo  j))
+                         (r   (all j  hi))
                          (now (+ (xpect l (? b4 n))
                                  (xpect r (? b4 n)))))
-                    (if (< now best)
-                        (if (> (- (? r mu) (? l mu))
-                               epsilon)
+                    (if (and (< now best)
+                             (> (? r mu) (? l mu)
+                                epsilon))
                             (setf best now
-                                  cut  j)))))))
+                                  cut  j))))))
          cut)
        (recurse (lo cut hi)
          (split lo  cut)
@@ -82,19 +74,17 @@
     (split 0 (length arr))
     out))
 
-(defun superranges (lst &key (n 20) (xepsilon 0) (cohen 0.2)
-                          (x #'first) (y #'second))
-  "Split x-values in ranges; combine ranges that do not alter y.
-   Returns an array of array of numbers"
-  (let* ((arr      (l->a
-                    (ranges lst :n n :epsilon xepsilon :f x)))
-         (n        (make-instance 'num)) ; XXX need two levesl of add here
-        (yepsilon  (* cohen
-                      (with-array-list (z arr :f y :out (? n sd))
-                        (add n z))))
-         )
-    (print yepsilon)
-;    (print yepsilon)
-    (print (first (superranges1 arr y yepsilon)))
-    ))
-
+(defun superranges (lst &key (n        (sqrt (length lst)))
+                             (xepsilon 1)
+                             (cohen    0.2)
+                             (x        #'first)
+                             (y        #'second))
+  "Consider combining the splits found 'ranges' if the y-values
+   in adjacent splits are too similar. Returns an array of array of numbers"
+  (let* ((unsup (ranges lst :n n :epsilon xepsilon :f x))
+         (arr   (l->a unsup))
+         (nums  (range-sum arr :f y))
+         (sup   (superranges1 arr y (* cohen (? nums sd)))))
+    (values (reverse sup)
+            unsup)))
+  

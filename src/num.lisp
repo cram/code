@@ -33,7 +33,10 @@
      `(nump
        (n  . ,n)  (pos . ,pos) (txt . ,txt) (w  . ,w)
        (mu . ,mu) (sd . ,sd)  (lo  . ,lo)  (hi . ,hi)))))
-  
+
+(defmethod median ((x num))
+  (median (? x any)))
+
 (defmethod xpect ((x num) &optional (all 1))
   "return stadnard deviation, expressed as a ratio of 'all'"
   (* (slot-value x 'sd) (/ (slot-value x 'n) all)))
