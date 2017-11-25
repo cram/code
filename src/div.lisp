@@ -32,10 +32,10 @@
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmacro with-array-list-items
+(defmacro with-array-list
     ((one arr &key (f #'identity) (lo 0) hi out) &body body)
   "Iterate over the items in an array of list of items.
-   Optionally, Items are filtered via a function 'f'.
+   Optionally, items are filtered via a function 'f'.
    Consistent with subseq, this runs from lo to hi-1"
   (let ((i     (gensym))
         (two   (gensym))
@@ -49,13 +49,12 @@
        ,out)))
  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun superranges1 (arr what epsilon &aux out)
+(defun superranges1 (arr fn epsilon &aux out)
   "split array at point that minimized expected value of sd"
   (labels
       ((all (lo hi &aux (out (make-instance 'num )))
-         (with-array-list-items
-             (one arr :f what :out out :lo lo :hi hi)
-           (add out one)))
+         (with-array-list (z arr :f fn :out out :lo lo :hi hi)
+           (add out z)))
        (argmin (lo hi &aux cut (best most-positive-fixnum))
          (when (< lo hi)
            (let ((b4 (all lo hi)))
@@ -91,9 +90,8 @@
                     (ranges lst :n n :epsilon xepsilon :f x)))
          (n        (make-instance 'num)) ; XXX need two levesl of add here
         (yepsilon  (* cohen
-                      (with-array-list-items
-                          (yval arr :f y :out (? n sd))
-                        (add n yval))))
+                      (with-array-list (z arr :f y :out (? n sd))
+                        (add n z))))
          )
     (print yepsilon)
 ;    (print yepsilon)
