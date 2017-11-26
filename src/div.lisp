@@ -32,34 +32,56 @@
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun range-sum (arr &key (klass 'num) (f #'identity)
-                        (lo 0) (hi (length arr)))
-  (let ((out (make-instance klass)))
-    (loop for i from lo to (1- hi) do
-         (let ((lst (aref arr i)))
-           (dolist (item lst)
-             (add out (funcall f item)))))
-    out))
+;; (defun range-sum (arr &key (klass 'num) (f #'identity)
+;;                         (lo 0) (hi (length arr)))
+;;   (let ((out (make-instance klass)))
+;;     (loop for i from lo to (1- hi) do
+;;          (let ((lst (aref arr i)))
+;;            (dolist (item lst)
+;;              (add out (funcall f item)))))
+;;     out))
 
+(defun range-memo (arr fn &optional
+                            (here 0)
+                            (stop (1- (length arr)))
+                            (memo (make-hash-table)))
+  (let* ((inc  (if (> stop here) 1 -1))
+         (now  (if (eql here stop)
+                   (make-instance 'num)
+                   (copy (range-memo arr fn (+ here inc) stop memo)))))
+     (setf (gethash here memo)
+           (dolist (item (aref arr here) now)  
+             (add now (funcall fn item))))))
+                                           
 ; XXX cache the ranges
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (Defun superranges1 (arr fn epsilon &aux out)
   "split array at point that minimized expected value of sd"
   (labels
-      ((argmin (lo hi &aux cut (best most-positive-fixnum))
+      ((argmin (lo hi)
          (when (< lo hi)
-           (let ((b4 (range-sum arr :lo lo :hi hi  :f fn)))
-             (loop for j from (1+ lo) to hi do
-                  (let* ((l   (range-sum arr :lo lo :hi j  :f fn))
-                         (r   (range-sum arr :lo j  :hi hi :f fn))
-                         (now (+ (xpect l (? b4 n))
-                                 (xpect r (? b4 n)))))
-                    (if (and (< now best)
-                             (> (- (? r mu) (? l mu))
-                                epsilon))
-                        (setf best now
-                              cut  j))))))
-         cut)
+           (let (cut
+                 (best   most-positive-fixnum)
+                 (lefts  (make-hash-table))
+                 (rights (make-hash-table)))
+             (print `(argmin ,lo ,hi))
+             (range-memo arr fn (1- hi)  lo  lefts)
+             (range-memo arr fn lo   (1- hi) rights)
+             (loop for var being the hash-keys in lefts do
+                (print `(loo ,var ,(gethash var lefts))))
+             (let ((b4 (gethash 0 rights)))
+               (loop for j from (1+ lo) to hi do
+                    (print `(j ,j))
+                    (let* ((l   (gethash (- j 1) lefts)) ;XXXX?
+                           (r   (gethash (- j 1) rights)) ; XXXX?
+                           (now (+ (xpect l (? b4 n))
+                                   (xpect r (? b4 n)))))
+                      (if (and (< now best)
+                               (> (- (? r mu) (? l mu))
+                                  epsilon))
+                          (setf best now
+                                cut  j)))))
+             cut)))
        (recurse (lo cut hi)
          (split lo  cut)
          (split cut hi))   
@@ -73,8 +95,8 @@
 
 (defun bins (lst)
   (if (< (/ (length lst) 16))
-      10
-      16))
+      (/ (length lst) 10)
+      (/ (length lst) 16)))
 
 (defun superranges (lst &key (n        (bins lst))
                              (xepsilon 1)
@@ -83,11 +105,13 @@
                              (y        #'second))
   "Consider combining the splits found 'ranges' if the y-values
    in adjacent splits are too similar. Returns an array of array of numbers"
-  (print n)
-  (let* ((unsup (ranges lst :n n :epsilon xepsilon :f x))
+  (let* ((unsup (ranges lst :n 25 :epsilon xepsilon :f x))
          (arr   (l->a unsup))
-         (nums  (range-sum arr :f y))
-         (sup   (superranges1 arr y (* cohen (? nums sd)))))
-    (values (reverse sup)
-            unsup)))
+         (nums  (range-memo arr y))
+         (sup   (superranges1 arr y (* cohen (? nums sd))))
+         )
+    (print (? nums sd))
+    (print (float (? nums mu)))
+;    (values (reverse sup) unsup)
+    ))
   
