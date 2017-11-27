@@ -3,7 +3,7 @@
       "../src/sample")
 
 (deftest remedian0 ()
-  "diffs"
+  "what's the best way to learn median?"
   (let* ((loops1 10) 
          (loops2 (expt 10 2))
          (total  (* loops1 loops2))
@@ -28,6 +28,6 @@
     (format t 
        "d1: ~a~%d2: ~a~%remedian: ~a~%sample: ~a~%ratio: ~a ~%" 
        d1 d2
-       (/ d1 total) (/ d2 total)
+          (/ d1 total) (/ d2 total)
        (/ (/ d1 total) (/ d2 total)))))
 

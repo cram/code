@@ -61,6 +61,10 @@
        ((not ,test))
      ,@body))
 
+(defmacro until (test &body body)
+  `(while (not ,test)
+     ,@body))
+
 ;----------------
 ; ## Maths Tricks
 ;
