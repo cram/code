@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% Data from StatLib (ftp stat.cmu.edu/datasets)
 ;%
 ;% This is the data set called `DETROIT' in the book `Subset selection in

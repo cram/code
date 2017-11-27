@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% Data from StatLib (ftp stat.cmu.edu/datasets)
 ;%
 ;% The infamous Longley data, "An appraisal of least-squares programs from

@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% Dataset from Smoothing Methods in Statistics
 ;% (ftp stat.cmu.edu/datasets)
 ;%

@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% 1. Title: Image Segmentation data
 ;%
 ;% 2. Source Information

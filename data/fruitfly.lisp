@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ;%
 ;% Identifier attribute deleted.

@@ -41,6 +41,9 @@
               (add out (funcall f item)))))
      out))
 
+;; XXX cache the ranges
+;; seemed like a good idea.... but i got some many
+;; 1+ errors that i went back to old
 ;; (defun range-memo (arr fn &optional
 ;;                             (here 0)
 ;;                             (stop (1- (length arr)))
@@ -53,7 +56,7 @@
 ;;            (dolist (item (aref arr here) now)  
 ;;              (add now (funcall fn item))))))
                                            
-; XXX cache the ranges
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (Defun superranges1 (arr fn epsilon &aux out)
   "split array at point that minimized expected value of sd"

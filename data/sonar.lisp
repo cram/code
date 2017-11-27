@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% NAME: Sonar, Mines vs. Rocks
 ;%
 ;% SUMMARY: This is the data set used by Gorman and Sejnowski in their study

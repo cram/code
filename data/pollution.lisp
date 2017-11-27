@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% Data from StatLib (ftp stat.cmu.edu/datasets)
 ;%
 ;% This is the pollution data so loved by writers of papers on ridge regression.

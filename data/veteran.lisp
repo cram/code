@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% Data from StatLib (ftp stat.cmu.edu/datasets)
 ;%
 ;% Veteran's Administration Lung Cancer Trial

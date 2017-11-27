@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% ;
 ;% ; Thyroid disease records supplied by the Garavan Institute and J. Ross
 ;% ; Quinlan, New South Wales Institute, Syndney, Australia.

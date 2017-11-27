@@ -1,3 +1,4 @@
+(in-package :cram)
 
 (defun weather2 ()
   (data

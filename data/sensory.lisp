@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% Data from StatLib (ftp stat.cmu.edu/datasets)
 ;%
 ;% Data for the sensory evaluation experiment in Brien, C.J. and Payne,

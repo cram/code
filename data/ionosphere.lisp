@@ -1,3 +1,4 @@
+(in-package :cram)
 ;%1. Title: Johns Hopkins University Ionosphere database
 ;%
 ;%2. Source Information:

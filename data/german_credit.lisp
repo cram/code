@@ -1,3 +1,4 @@
+(in-package :cram)
 ;% Description of the German credit dataset.
 ;%
 ;% 1. Title: German Credit data

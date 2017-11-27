@@ -52,30 +52,64 @@
                   `(rows ,(length (? obj rows)))
                   `(cols ,details)))))
   
+(defconstant +less+  #\<)
+(defconstant +more+  #\>)
+(defconstant +num+   #\$)
+(defconstant +klass+ #\!)
+(defconstant +goal+  (list +less+ +more+ +klass+))
+
 (defun defcol (tbl name pos)
   (labels
-      ((num () (make-instance 'num :txt  name :pos pos))
-       (sym () (make-instance 'sym :txt  name :pos pos))
-       (doit (col list-of-slots)
-         (dolist (slots list-of-slots col)
-           (change #'(lambda (slot) (tail-append slot col))
-                   tbl slots))))
+      ((num (slots) (doit 'num slots))
+       (sym (slots) (doit 'sym slots))
+       (doit (klass list-of-slots)
+         (let ((col (make-instance klass)))
+           (dolist (slots list-of-slots col)
+             (change #'(lambda (slot) (tail-append slot col))
+                     tbl slots)))))
     (case
         (char (symbol-name name) 0)
-      (#\> (doit (num) '((xy all) (xy nums) (y all) (y nums) (more)   )))
-      (#\< (doit (num) '((xy all) (xy nums) (y all) (y nums) (less)   )))
-      (#\$ (doit (num) '((xy all) (xy nums) (x all) (x nums)          )))
-      (#\! (doit (sym) '((xy all) (xy syms) (y all) (y syms) (klasses))))
-      (t   (doit (sym) '((xy all) (xy syms) (x all) (x syms)       ))))))
+      (+more+  (num '((xy all) (xy nums) (y all) (y nums) (more)   )))
+      (+less+  (num '((xy all) (xy nums) (y all) (y nums) (less)   )))
+      (+num+   (num '((xy all) (xy nums) (x all) (x nums)          )))
+      (+klass+ (sym '((xy all) (xy syms) (y all) (y syms) (klasses))))
+      (t       (sym '((xy all) (xy syms) (x all) (x syms)       ))))))
+
+(defun hasgoal (spec)
+  (and spec
+       (or (member   (char (symbol-name (car spec)) 0)
+                     +goal+)
+           (hasgoal  (cdr spec)))))
+
+;xxx handle nump
+
+(defun makegoal (row1 rows)
+  (let* ((row1   (reverse row1))
+         (col0   (pop row1))
+         (datum  (car (last (first rows))))
+         (what   (if (symbolp datum)
+                    +klass+
+                    +less+))
+         (nump   (eql +num+
+                      (char (symbol-name datum) 0)))
+         (col    (intern 
+                  (format nil "~a~a" what col0))))
+    (cons (reverse (cons col row1))
+          rows)))
 
 (defun table0 (name rows)
   (let ((tb (make-instance 'table))
         (row1 (pop  rows)))
-    (setf (? tb name) name
-          (? tb spec) row1)
-    (doitems (txt pos row1  tb)
-        (defcol tb txt pos))
-    (adds tb rows)
-    tb
-    
-    ))
+    (cond ((not (hasgoal row1))
+           (table0 name (makegoal row1 rows)))
+          (t
+           (setf (? tb name) name
+                 (? tb spec) row1)
+           (doitems (txt pos row1  tb)
+               (defcol tb txt pos))
+           (adds tb rows)
+           tb))))
+
+(defun data (&key name columns egs)
+  "handles a conversion from an older format"
+  (table name (cons columns egs)))

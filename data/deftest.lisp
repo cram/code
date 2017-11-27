@@ -1,3 +1,4 @@
+(in-package :cram)
 ; From Peter Seiblel's excellent text: http://gigamonkeys.com/book
 (defparameter *test-name* nil)  
 (defparameter *tests* nil)  

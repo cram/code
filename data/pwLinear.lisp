@@ -1,3 +1,4 @@
+(in-package :cram)
 ;%
 ;% As used by Kilpatrick, D. & Cameron-Jones, M. (1998). Numeric prediction
 ;% using instance-based learning with encoding length selection. In Progress
