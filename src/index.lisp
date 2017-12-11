@@ -1,7 +1,7 @@
 
 
 ;## Welcome to CRAM
-; 
+;
 ; <a href="http://doi.org/10.5281/zenodo.1054269"><img src=https://zenodo.org/badge/DOI/10.5281/zenodo.1054269.svg></a>
 ;
 ; One of my more effective tricks for teaching data mining (to graduate students) is to:

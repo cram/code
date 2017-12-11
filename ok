@@ -10,8 +10,8 @@ Test="$HOME/gits/lisp/cram/code/test"
 run1 () {
     local Here="$PWD"
     cd "$Test"
-    if [ ! -f "../test/${1}.lisp" ]; then
-      echo "No such file test/${1}.lisp"
+    if [ ! -f "../test/${1}ok.lisp" ]; then
+      echo "No such file test/${1}ok.lisp"
       return 1
     fi
     time $Sbcl --noinform --disable-debugger --eval "

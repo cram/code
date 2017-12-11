@@ -14,7 +14,7 @@
 
 (let ((seen))  
   (defun uses (&rest lst)
-    ;#+playing
+    #+playing
     (labels (
       (use1 (f)
 	    (dolist (path +paths+)
@@ -22,10 +22,10 @@
 		     (h (format nil "~a.lisp" g)))
 		(if (probe-file h)
 		  (handler-bind
-		    ((style-warning #'muffle-warning))
-		    (format t ";;; ~a~%" g)
-		    (load g)
-		    (push f seen)
+                    ((style-warning #'muffle-warning))
+                    (format t ";;; ~a~%" g)
+                    (load g)
+                    (push f seen)
 		    (return-from use1)))))))
       (dolist (f lst)
 	(when (not (member f seen :test #'equalp))
