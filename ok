@@ -10,6 +10,10 @@ Test="$HOME/gits/lisp/cram/code/test"
 run1 () {
     local Here="$PWD"
     cd "$Test"
+    if [ ! -f "../test/${1}.lisp" ]; then
+      echo "No such file test/${1}.lisp"
+      return 1
+    fi
     time $Sbcl --noinform --disable-debugger --eval "
         (progn (push :playing *features*)
                (mapc #'load '(  \"../src/boot\"

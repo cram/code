@@ -1,6 +1,6 @@
 (in-package :cram)
 
-(uses "../src/lib")
+(uses "lib")
 
 (defthing summary thing
   (txt "") (pos 0) (n 0) (w 1))

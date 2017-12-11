@@ -6,16 +6,30 @@
 
 (format t ";;; ../test/boot~%")
 
+(defvar +paths+
+	      '("."
+		"../src"
+	        "../test"
+	        "../data"))
+
 (let ((seen))  
   (defun uses (&rest lst)
-    #+playing
-    (dolist (f lst)
-      (when (not (member f seen :test #'equalp))
-        (push f seen)
-        (handler-bind
-            ((style-warning #'muffle-warning))
-          (format t ";;; ~a~%" f)
-          (load f))))))
+    ;#+playing
+    (labels (
+      (use1 (f)
+	    (dolist (path +paths+)
+	      (let* ((g (format nil "~a/~a" path f))
+		     (h (format nil "~a.lisp" g)))
+		(if (probe-file h)
+		  (handler-bind
+		    ((style-warning #'muffle-warning))
+		    (format t ";;; ~a~%" g)
+		    (load g)
+		    (push f seen)
+		    (return-from use1)))))))
+      (dolist (f lst)
+	(when (not (member f seen :test #'equalp))
+	  (use1 f))))))
 
 (defparameter *tests* nil)
 

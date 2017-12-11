@@ -25,11 +25,11 @@ Here some more
   (xy (make-instance 'cols))
   (x  (make-instance 'cols))
   (y  (make-instance 'cols)))
-  
+ 
 (defun deftable1 (name cols rows)
   (let ((tb (make-instance 'tbl :name name :cols cols)))
     (doitems (col pos cols tb)
-      (defcol tb col pos))))
+       (defcol tb col pos))))
 
 (defmacro deftable (name (&rest cols) &body rows)
   `(deftable1 ',name ',cols ',rows))

@@ -1,7 +1,6 @@
 (in-package :cram)
-(uses "../src/summary"
-      "../src/sample")
-
+(uses "summary"
+      "sample")
 
 (defthing num summary
   (any (make-instance 'sample))
