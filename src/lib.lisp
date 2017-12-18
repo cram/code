@@ -11,6 +11,13 @@
   (princ c) 
   (finish-output))
 
+;------------------
+(defun bye ()
+  #+sbcl (sb-ext:quit)
+  #+clisp (ext:exit)
+  #+ccl (ccl:quit)
+  #+allegro (excl:exit))
+
 ; -----------------
 ; ## List tricks
 ;
@@ -64,6 +71,37 @@
 (defmacro until (test &body body)
   `(while (not ,test)
      ,@body))
+
+;; defun end  (x &rest cs)
+ ;;  (when (symbolp x) 
+ ;;    (let* ((txt  (symbol-name x))
+ ;;           (n    (length txt))
+ ;;           (last (elt txt (1- n))))
+ ;;      (equal c last))))
+ 
+;(lets  ((aa? (a b) fun )
+;        bb
+
+(defmacro let! (&optional spec &body rest)
+  (when spec
+   `(let ,(let!1 (car spec) (cdr spec))
+      ,@rest)))
+
+(defmacro let!1 ((one &optional two three) &optional lst)
+  (cond (three              
+         `(labels ((,one ,two ,@three)) ,@(let! lst)))
+        ((and two (listp one)) 
+         `(multiple-value-bind ,one ,@two ,@(let! lst)))
+        (two 
+         `(let ((,one ,@two)) ,@(let! lst)))
+        (t 
+         `(let (,one) ,@(let! lst)))))
+
+
+
+(print (macroexpand-1 '(let! (a b c) (print c))))
+
+(bye)
 
 ;----------------
 ; ## Maths Tricks

@@ -19,7 +19,7 @@
   (let ((details (slots obj all nums syms)))
     (format src "~a" `(cols ,details))))
 
-;## Table
+; ## Tables
 ;
 ; `Table`s have `rows` which are summarizes
 ; in different sets of `cols`. Depedent variables
