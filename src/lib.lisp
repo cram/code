@@ -13,7 +13,7 @@
 
 ;------------------
 (defun bye ()
-  #+sbcl (sb-ext:quit)
+  #+sbcl (sb-ext:exit)
   #+clisp (ext:exit)
   #+ccl (ccl:quit)
   #+allegro (excl:exit))
@@ -82,24 +82,34 @@
 ;(lets  ((aa? (a b) fun )
 ;        bb
 
-(defmacro let! (&optional spec &body rest)
-  (when spec
-   `(let ,(let!1 (car spec) (cdr spec))
-      ,@rest)))
 
-(defmacro let!1 ((one &optional two three) &optional lst)
-  (cond (three              
-         `(labels ((,one ,two ,@three)) ,@(let! lst)))
-        ((and two (listp one)) 
-         `(multiple-value-bind ,one ,@two ,@(let! lst)))
-        (two 
-         `(let ((,one ,@two)) ,@(let! lst)))
-        (t 
-         `(let (,one) ,@(let! lst)))))
+(defun  let!prim  (s1 ss body)
+  (let* ((one   (if (listp s1) (first s1)    s1))
+         (two   (if (listp s1) (second s1)))
+         (three (if (Listp s1) (third s1)))
+         (rest  (if ss
+                    (list (let!prim (car ss) (cdr  ss) body))
+                    body)))                    
+    (cond 
+      ((listp one) `(multiple-value-bind ,one ,two ,@rest))
+      (three       `(labels ((,one ,two ,three))   ,@rest))
+      (t           `(let    ((,one ,two))          ,@rest)))))
+ 
+(defmacro let! (specs &body body)
+  (let!prim (car specs) (cdr specs) body))
 
-
-
-(print (macroexpand-1 '(let! (a b c) (print c))))
+(print (macroexpand-1 '(let! (a b) (print b) (print c))))
+(print (macroexpand-1 '(let! (
+                              o 
+                              r
+                              ((m n) (fred 222))
+                              (c (l &optional (m 1)) (+ l m))
+                              (d (k &optional (z 22))  (c 2 4))
+                              (a 1) 
+                              (b  23) 
+                              
+                              )
+                        (print b) (print c))))
 
 (bye)
 
@@ -129,7 +139,7 @@
            (s->x (make-string-input-stream str) reader)
            (if (listen str)
                (cons (funcall reader str)
-                     (s->x    str reader))))))
+               (s->x    str reader))))))
   (defun s->w (str) (s->x str  #'read))
   (defun s->l (str) (s->x str  #'read-char)))
 
