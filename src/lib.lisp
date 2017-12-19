@@ -82,18 +82,17 @@
 ;(lets  ((aa? (a b) fun )
 ;        bb
 
-
 (defun  let!prim  (s1 ss body)
-  (let* ((one   (if (listp s1) (first s1)    s1))
-         (two   (if (listp s1) (second s1)))
-         (three (if (Listp s1) (third s1)))
-         (rest  (if ss
-                    (list (let!prim (car ss) (cdr  ss) body))
-                    body)))                    
+  (let* ((x1 (if (listp s1) (first  s1)    s1))
+         (x2 (if (listp s1) (second s1)))
+         (x3 (if (Listp s1) (third  s1)))
+         (y  (if ss
+                 (list (let!prim (car ss) (cdr  ss) body))
+                 body)))                  
     (cond 
-      ((listp one) `(multiple-value-bind ,one ,two ,@rest))
-      (three       `(labels ((,one ,two ,three))   ,@rest))
-      (t           `(let    ((,one ,two))          ,@rest)))))
+      ((listp x1) `(multiple-value-bind ,x1 ,x2 ,@y))
+      (x3         `(labels ((,x1 ,x2 ,x3))      ,@y))
+      (t          `(let    ((,x1 ,x2))          ,@y)))))
  
 (defmacro let! (specs &body body)
   (let!prim (car specs) (cdr specs) body))
@@ -106,8 +105,7 @@
                               (c (l &optional (m 1)) (+ l m))
                               (d (k &optional (z 22))  (c 2 4))
                               (a 1) 
-                              (b  23) 
-                              
+                              (b  23)                     
                               )
                         (print b) (print c))))
 
