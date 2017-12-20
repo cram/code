@@ -97,20 +97,6 @@
 (defmacro let! (specs &body body)
   (let!prim (car specs) (cdr specs) body))
 
-(print (macroexpand-1 '(let! (a b) (print b) (print c))))
-(print (macroexpand-1 '(let! (
-                              o 
-                              r
-                              ((m n) (fred 222))
-                              (c (l &optional (m 1)) (+ l m))
-                              (d (k &optional (z 22))  (c 2 4))
-                              (a 1) 
-                              (b  23)                     
-                              )
-                        (print b) (print c))))
-
-(bye)
-
 ;----------------
 ; ## Maths Tricks
 ;
