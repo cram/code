@@ -31,10 +31,6 @@
 	(when (not (member f seen :test #'equalp))
 	  (use1 f))))))
 
-(defmacro oo (&rest l)
-  "Print a symbol and its binding."
-  `(progn (terpri) (o ,@l)))
-
 (defmacro o (&rest l)
   "Print a list of symbols and their bindings."
   (let ((last (gensym)))
