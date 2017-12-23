@@ -31,6 +31,22 @@
 	(when (not (member f seen :test #'equalp))
 	  (use1 f))))))
 
+(defmacro oo (&rest l)
+  "Print a symbol and its binding."
+  `(progn (terpri) (o ,@l)))
+
+(defmacro o (&rest l)
+  "Print a list of symbols and their bindings."
+  (let ((last (gensym)))
+    `(let (,last)
+       ,@(mapcar #'(lambda(x) `(setf ,last (oprim ,x))) l)
+       (terpri)
+       ,last)))
+
+(defmacro oprim (x)
+  "Print a thing and its binding, then return thing."
+  `(progn (format t "~&[~a]=[~a] " ',x ,x) ,x))
+
 (defparameter *tests* nil)
 
 (defmacro deftest (name params  &optional (doc "") &body body)
@@ -38,7 +54,7 @@
   `(progn
      (unless (member ',name *tests*) (push ',name *tests*))
      (defun ,name ,params ,doc
-            (format t "~%;;; ~a~%" ',name )
+            (format t "~&~%;;; ~a~%" ',name )
             (format t "; ~a~%" ,doc)
             ,@body
             (terpri))))
@@ -49,14 +65,18 @@
   (defun test (want got)
     "Run one test, comparing 'want' to 'got'."
     (labels  
-        ((white (c)     (member c '(#\# #\\ #\Space #\Tab #\Newline
-                                   #\Linefeed #\Return #\Page) :test #'char=))
+        ((white (c) (member c '(#\# #\\ #\Space #\Tab #\Newline
+                              #\Linefeed #\Return #\Page) 
+                              :test #'char=))
          (whiteout (s)  (remove-if #'white s)) 
-         (samep (x y)   (whiteout (format nil "~(~a~)" x)) 
-                        (whiteout (format nil "~(~a~)" y))))
-      (cond ((samep want got) (incf pass))
-            (t                (incf fail)
-                              (format t "~&; fail : expected ~a~%" want)))
+         (samep (x y)   (equalp
+                         (whiteout (format nil "~(~a~)" x)) 
+                         (whiteout (format nil "~(~a~)" y)))))
+      (cond ((samep want got) 
+             (incf pass))
+            (t  
+             (incf fail)
+             (format t "~&; fail : expected ~a~%" want)))
       got))
   
   (defun tests ()

@@ -72,6 +72,7 @@
   `(while (not ,test)
      ,@body))
 
+
 ;; defun end  (x &rest cs)
  ;;  (when (symbolp x) 
  ;;    (let* ((txt  (symbol-name x))
@@ -80,8 +81,8 @@
  ;;      (equal c last))))
  
 ;(lets  ((aa? (a b) fun )
-;        bb
-
+;        bb  
+  
 (defun  let!prim  (s1 ss body)
   (let* ((x1 (if (listp s1) (first  s1)    s1))
          (x2 (if (listp s1) (second s1)))
@@ -90,7 +91,7 @@
                  (list (let!prim (car ss) (cdr  ss) body))
                  body)))                  
     (cond 
-      ((listp x1) `(multiple-value-bind ,x1 ,x2 ,@y))
+      ((consp x1) `(multiple-value-bind ,x1 ,x2 ,@y))
       (x3         `(labels ((,x1 ,x2 ,x3))      ,@y))
       (t          `(let    ((,x1 ,x2))          ,@y)))))
  
