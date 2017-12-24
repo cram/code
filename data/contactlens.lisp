@@ -1,4 +1,3 @@
-(in-package :cram)
 (defun contact-lens ()
   (data
    :name 'contact-lens

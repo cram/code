@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% Publication Request:
 ;%    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ;%    This file describes the contents of the heart-disease directory.

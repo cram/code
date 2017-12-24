@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% 1. Title: Waveform Database Generator (written in C)
 ;%
 ;% 2. Source:

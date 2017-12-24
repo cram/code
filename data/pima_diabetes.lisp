@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% 1. Title: Pima Indians Diabetes Database
 ;%
 ;% 2. Sources:

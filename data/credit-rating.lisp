@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% 1. Title: Credit Approval
 ;%
 ;% 2. Sources:

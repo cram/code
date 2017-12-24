@@ -1,4 +1,3 @@
-(in-package :cram)
 (defun audiology ()
   (data
     :name 'audiology

@@ -1,4 +1,3 @@
-(in-package :cram)
 (defun weather.nominal ()
   (data
     :name 'weather.nominal

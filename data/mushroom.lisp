@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% 1. Title: Mushroom Database
 ;%
 ;% 2. Sources:

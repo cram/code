@@ -1,4 +1,3 @@
-(in-package :cram)
 (defun housing ()
   (data
    :name     'housing

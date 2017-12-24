@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% 1. TITLE:
 ;% 	Letter Image Recognition Data
 ;%

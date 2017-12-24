@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% 1. Title: Chess End-Game -- King+Rook versus King+Pawn on a7
 ;%    (usually abbreviated KRKPA7).  The pawn on a7 means it is one square
 ;%    away from queening.  It is the King+Rook's side (white) to move.

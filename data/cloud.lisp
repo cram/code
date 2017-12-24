@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% Data from StatLib (ftp stat.cmu.edu/datasets)
 ;%
 ;% These data are those collected in a cloud-seeding experiment in Tasmania

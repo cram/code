@@ -1,5 +1,3 @@
-(in-package :cram)
-(defun group1bolts()
  (data
   :name 'bolts
   :columns '($RUN $SPEED1 $TOTAL $SPEED2 $NUMBER2 $SENS $TIME $T20BOLT)

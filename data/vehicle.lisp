@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ;%
 ;%         This dataset comes from the Turing Institute, Glasgow, Scotland.

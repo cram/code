@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% 1. Title: meta-data
 ;%
 ;% 2. Sources:

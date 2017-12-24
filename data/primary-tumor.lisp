@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% Citation Request:
 ;%    This primary tumor domain was obtained from the University Medical Centre,
 ;%    Institute of Oncology, Ljubljana, Yugoslavia.  Thanks go to M. Zwitter and

@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% 1. Title: Servo Data
 ;%
 ;% 2. Sources

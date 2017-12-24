@@ -1,4 +1,3 @@
-(in-package :cram)
 ;%
 ;% Notes: The large soybean database (soybean-large-data.arff) and it's
 ;%        corresponding test database (soybean-large-test.arff) combined

@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% Citation Request:
 ;%    This breast cancer domain was obtained from the University Medical Centre,
 ;%    Institute of Oncology, Ljubljana, Yugoslavia.  Thanks go to M. Zwitter and

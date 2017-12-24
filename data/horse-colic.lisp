@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% 1. Title: Horse Colic database
 ;%
 ;% 2. Source Information

@@ -1,4 +1,3 @@
-(in-package :cram)
 ;% Data from StatLib (ftp stat.cmu.edu/datasets)
 ;%
 ;% Data from which conclusions  were  drawn  in  the  article  "Sleep  in
