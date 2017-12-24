@@ -1,83 +1,56 @@
-; # Head
-; 
-; Text to get is starated
-#|
-Here some more
-|#
+(defpackage :fft
+    (:use :common-lisp))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; col
+(in-package :fft)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; num
+(defvar *tests* nil)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; defcol
+(defmacro deftest (name params  &optional (doc "") &body body)
+  "Create a defun, adding it name to the list of *tests*."
+  `(progn
+     (unless (member ',name *tests*) (push ',name *tests*))
+     (defun ,name ,params ,doc
+            (format t "~&~%;;; ~a~%" ',name )
+            (format t "; ~a~%" ,doc)
+            ,@body
+            (terpri))))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; deftable
-
-(defthing  cols thing
-  (all) (nums) (syms))
-
-(defthing table thing
-  (xy (make-instance 'cols))
-  (x  (make-instance 'cols))
-  (y  (make-instance 'cols)))
- 
-(defun deftable1 (name cols rows)
-  (let ((tb (make-instance 'tbl :name name :cols cols)))
-    (doitems (col pos cols tb)
-       (defcol tb col pos))))
-
-(defmacro deftable (name (&rest cols) &body rows)
-  `(deftable1 ',name ',cols ',rows))
-
-(defun defcol (tb name pos)
-  (labels
-   ((num () (make-instance 'num :name name :pos pos))
-    (sym () (make-instance 'sym :name name :pos pos))
-    (doit (col list-of-slots)
-          (dolist (slots list-of-slots)
-            (change
-             (lambda (slot) (cons col slot))
-             tb slots))))
-   (case
-        (char (symbol-name name) 0)
-      (#\> (doit (num) '((xy all) (xy nums) (y all) (y nums) (more)   )))
-      (#\< (doit (num) '((xy all) (xy nums) (y all) (y nums) (less)   )))
-      (#\$ (doit (num) '((xy all) (xy nums) (x all) (x nums)          )))
-      (#\! (doit (sym) '((xy all) (xy syms) (y all) (y syms) (klasses))))
-      (t   (doit (sym) '((xy all) (xy syms) (x all) (x syms)       ))))))
-
-;(deftest col1 ()
- ; (let ((tb (make-tbl)))
-  ; (print (defcol tb '$x 0))
-   ; tb))
-
-(deftest defcol? ()
-  (let* ((tb   (make-instance 'table))
-         (eg  `((aa    $bb $cc dd !ee)
-                (sunny 85 85 FALSE no)
-                (sunny 80 90 TRUE no)
-                (overcast 83 86 FALSE yes)
-                (rainy 70 96 FALSE yes)
-                (rainy 68 80 FALSE yes)
-                (rainy 65 70 TRUE no)
-                (overcast 64 65 TRUE yes)
-                (sunny 72 95 FALSE no)
-                (sunny 69 70 FALSE yes)
-                (rainy 75 80 FALSE yes)
-                (sunny 75 70 TRUE yes)
-                (overcast 72 90 TRUE yes)
-                (overcast 81 75 FALSE yes)
-                (rainy 71 91 TRUE no)))
-         (cols  (car eg)))
-    (doitems (z pos cols tb)
-      (defcol tb z pos))))
-
+(let ((pass 0) (fail 0)) 
+  (defun ok (want got)
+    (cond ((equalp want got) (incf pass))
+          (t (incf fail)
+             (format t "~&; fail : expected ~a~%" want))))
+  
+  (defun tests ()
+    (when *tests*
+      (mapc #'funcall  (reverse *tests*))
+      (format t "~&~%; pass : ~a = ~5,1f% ~%; fail : ~a = ~5,1f% ~%"
+              pass (* 100 (/ pass (+ 0.000000001 pass fail)))
+              fail (* 100 (/ fail (+ 0.000000001 pass fail)))))))
     
-   
+(deftest _1 () (ok 1 1))
+(deftest _2 () (ok 2 1))
         
+;;;; command line
+(defun bye ()
+  #+sbcl (sb-ext:exit)
+  #+clisp (ext:exit)
+  #+allegro (excl:exit))
 
+(defun command-line ()
+  (cdr
+   #+clisp ext:*args*
+   #+sbcl sb-ext:*posix-argv*
+   #+allegro (sys:command-line-arguments)))
+  
+(defun run (argv)
+  "just symbols & keywords & numbers (not strings or lists)"
+  (let* ((com  (and argv (mapcar 'read-from-string argv)))
+         (fn   (and com (car com)))
+         (args (and com (cdr com))))
+    (if fn
+        (apply fn args)
+        (tests))))
+
+(run (command-line))
+(bye)
