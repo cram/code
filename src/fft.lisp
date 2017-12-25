@@ -13,7 +13,10 @@
 
 (load "macros") 
 (load "tests")
+(load "rand")
 (load "lists")
+(load "strings")
+;;;;;;;;;;
 (load "cols")
 (load "table")
 (load "main")
@@ -24,8 +27,6 @@
     (with-open-file
         (in g :direction :input)
       (apply #'data (read in)))))
-
-
 
 (print (egs "weathernumerics"))
 

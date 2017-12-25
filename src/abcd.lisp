@@ -11,10 +11,10 @@
 	      (round (* 100 acc)))))
 
 (defun results! (results)
-	"Update all fields in a hash of results"
+  "Update all fields in a hash of results"
   (dohash (klass result results results)
     (result! result)))
-
+    
 (defun result! (result)
 "Update all fields in one result"
   (with-slots ( a b c d acc pf prec pd f g n) result
@@ -28,14 +28,12 @@
 	    g     (/ (* 2 notpf pd) (+ zip notpf pd)))))
   result)
 
-(defun results0 (tab)
+(defun results0 (klass)
  "For each class in a table, generate one place to store results"
  (let ((results (make-hash-table)))
-  )
-
-    (dolist (klass (table-sym-klass-names tbl) results)
-      (setf (gethash klass results)
-	    (make-result :target klass)))))
+   (dolist (klass klases results)
+     (setf (gethash klass results)
+           (make-result :target klass)))))
 
 (defun results+ (results actual predicted)
   (dohash (target result results results)

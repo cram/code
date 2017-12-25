@@ -14,11 +14,9 @@
 (defstruct col name has pos)
 
 ; derived col items
-(defun col-cnt (col) (sym-cnt (col-has col)))
-
 (defun col-vals (col)
   (loop for key being the hash-keys of 
-       (col-cnt col)
+       (sym-cnt (col-has col))
      collect key))
 
 (defmethod add1 ((col num) x)
@@ -31,8 +29,16 @@
           (setf most new
                 mode x)))))
 
+(defmethod valid ((col num) y)
+  (assert (numberp y) (y) "Not a number ~a" y))
+
+(defmethod valid ((col sym) y)
+  (declare (ignore col y))
+  t)
+
 (defun add (col x)
   (unless (eql x #\?)
+    (valid col x)
     (incf (slot-value col 'n))
     (add1 col x))
   x)
