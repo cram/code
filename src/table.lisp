@@ -8,8 +8,8 @@
     )
   "Keep some special columns in a seperate list.
    For every kept column, there must be an arity/1 
-   function of the same name to recognizes that 
-   kind of column.")
+   predictate of the same name that returns 't' if
+   it recognizes that column name.")
   
 (eval `(defstruct table 
          name cols egs klassNames 
@@ -33,7 +33,7 @@
                      :has (if (numeric colname)
                               (make-num)
                               (make-sym))))
-         (handle1HeaderName (tab col)
+         (columnKeeper  (tab col)
            (push col (table-cols tab))
            (dolist (one +keeping+)
              (if (funcall one (col-name col))
@@ -52,7 +52,7 @@
       (dolist (colname cols)
         (incf pos)
         (unless (skip colname)
-          (handle1HeaderName tab 
+          (columnKeeper tab 
             (makeNewColumn colname pos))))
       (dolist (eg egs)
         (handle1Row tab (l->a eg)))

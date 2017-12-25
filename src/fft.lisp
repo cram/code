@@ -11,12 +11,14 @@
 
 (in-package :fft)
 
+;;; load standard stuff
 (load "macros") 
 (load "tests")
 (load "rand")
 (load "lists")
 (load "strings")
-;;;;;;;;;;
+;;; load stuff for fft
+(load "abcd")
 (load "cols")
 (load "table")
 (load "main")
@@ -28,6 +30,15 @@
         (in g :direction :input)
       (apply #'data (read in)))))
 
-(print (egs "weathernumerics"))
+(deftest _weather ()
+  (egs "weathernumerics"))
+
+(deftest tmp (&key (file "weathernumerics"))
+  (let* ((tab  (egs file))
+         (seen (results0 (klassNames tab))))
+    (dolist (col (table-sym tab))
+      (let ((pos (col-pos col)))
+        (dolist (val (col-vals col))
+          (o pos val))))))
 
 #+tdd (main)
