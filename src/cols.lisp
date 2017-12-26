@@ -18,7 +18,7 @@
   (loop for key being the hash-keys of 
        (sym-cnt (col-has col))
      collect key))
-
+     
 (defmethod add1 ((col num) x)
   (push x (num-all col)))
 

@@ -1,12 +1,3 @@
-###;;; args wont wolf for ":key" args
-#If the first argument is "ing"...
-ifeq (tdd,$(firstword $(MAKECMDGOALS)))
-   # use the rest as arguments for "run"
-   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-   # ...and turn them into do-nothing targets
-   $(eval $(RUN_ARGS):;@:)
-endif
-
 me:
 	@$(MAKE) Name="Tim Menzies" Email="tim@menzies.us" gitting
 
@@ -30,8 +21,12 @@ tdd:
          Main="$(word 2, $(RUN_ARGS))"\
          sbcl
 
-sbcl:
-	echo sbcl --noinform \
-		--disable-debugger \
-		--eval  '(push :tdd *features*)' \
-		--load "$(Main).lisp"  "$(Args)"
+FFT=sh lisp fft
+
+eg1:; @$(FFT) keyTest :aa 1000000
+
+EGS=$(shell egrep '^eg' Makefile | awk -F: '{s = s " "$$1} END {print s}')
+
+demo:
+	@$(MAKE)  $(EGS)
+

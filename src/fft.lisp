@@ -33,12 +33,22 @@
 (deftest _weather ()
   (egs "weathernumerics"))
 
-(deftest tmp (&key (file "weathernumerics"))
+(defun rankvals (tab)
+  (let ((all     (make-hash-table :test #'equal))
+        (klasses (klassNames tab)))
+    (labels 
+        ((about (col val &aux `(,(col-pos col) ,val))
+           (or (gethash all k)
+               (setf (gethash all k) (abcd0 tab)))))
   (let* ((tab  (egs file))
-         (seen (results0 (klassNames tab))))
+         
     (dolist (col (table-sym tab))
       (let ((pos (col-pos col)))
         (dolist (val (col-vals col))
           (o pos val))))))
+
+(deftest keyTest (&key (bb 2) (aa 10))
+  (o aa bb)
+  (print (* bb aa)))
 
 #+tdd (main)
