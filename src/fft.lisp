@@ -37,9 +37,9 @@
   (let ((all     (make-hash-table :test #'equal))
         (klasses (klassNames tab)))
     (labels 
-        ((about (col val &aux `(,(col-pos col) ,val))
-           (or (gethash all k)
-               (setf (gethash all k) (abcd0 tab)))))
+        ((about (col val &aux (key `(,(col-pos col) ,val)))
+           (or (gethash all key)
+               (setf (gethash all key) (abcd0 tab)))))
   (let* ((tab  (egs file))
          
     (dolist (col (table-sym tab))
