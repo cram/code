@@ -28,7 +28,7 @@
     (assert  (probe-file g) (g) "missing file ~a" g)
     (with-open-file
         (in g :direction :input)
-      (apply #'data (read in)))))
+      (apply #'data (read in))))) ;;
 
 (deftest _weather ()
   (egs "weathernumerics"))
