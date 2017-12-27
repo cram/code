@@ -40,3 +40,4 @@ set encoding=utf-8
 set clipboard=unnamed
 set spell spelllang=en_us
 set nospell
+set tabstop=2 shiftwidth=2 expandtab

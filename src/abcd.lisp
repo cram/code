@@ -1,5 +1,3 @@
-
-
 (defstruct result  target (a 0) (b 0) (c 0) (d 0) acc pf prec pd f g)
 
 (defmethod print-object ((r result) str)
@@ -38,12 +36,12 @@
            (make-result :target klass)))))
 
 (defun results+ (results actual predicted)
-  (dohash (target result results results)
-    (with-slots (a b c d) result
-      (if (eql actual target)
-	  (if (eql predicted actual)
-	      (incf d)
-	      (incf b))
-	  (if (eql predicted target)
-	      (incf c)
-	      (incf  a))))))
+  (doh (target result results results)
+       (with-slots (a b c d) result
+         (if (eql actual target)
+           (if (eql predicted actual)
+             (incf d)
+             (incf b))
+           (if (eql predicted target)
+             (incf c)
+             (incf  a))))))

@@ -1,6 +1,9 @@
 Name=Tim Menzies
 Email=tim@menzies.us
 
+edit:
+	vim -u dotvimrc $f
+
 me:
 	$(MAKE) Name="Tim Menzies" Email="tim@menzies.us" gitting
 
@@ -34,7 +37,3 @@ EGS=$(shell egrep '^eg' Makefile | awk -F: '{s = s " "$$1} END {print s}')
 
 demo:
 	@$(MAKE)  $(EGS)
-
-edit:
-	vim -u dotvimrc *.lisp
-

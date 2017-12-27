@@ -1,6 +1,8 @@
 #|
 ; load without running tests
-(load "fft.lisp"
+(load "fft.lisp")
+
+; load with running tests
 (let ((*features* (cons :production *features*)))
   (load "fft.lisp"))
 |#
@@ -16,51 +18,28 @@
 (load "tests")
 (load "rand")
 (load "lists")
+(load "hash")
 (load "strings")
 (load "fun")
 ;;; load stuff for fft
 (load "abcd")
-(load "cols")
+(load "col")
 (load "table")
 (load "main")
 
-(defun egs (f)
-  (let ((g (format nil "../data/~a.lisp" f)))
+(defun egs (&key (file "weathernumerics"))
+  (let ((g (format nil "../data/~a.lisp" file)))
     (assert  (probe-file g) (g) "missing file ~a" g)
     (with-open-file
         (in g :direction :input)
       (apply #'data (read in))))) ;;
 
-(deftest _weather ()
-  (egs "weathernumerics"))
+(deftest weather ()
+  (let* ((tab (egs :file "weathernumerics"))
+         (kcol (table-klassCol tab)))
+    (test (length (table-egs tab)) 14)
+    (test (sym-keys kcol) '(no yes))))
 
-(defstruct range 
-  key
-  (cost-observe 0)
-  (cost-change  0)
-  klass abcd objs)
-
-(defstruct range-key val pos)
-(defun range-pos (x) (col-pos (range-col x))
-
-(defun ranges (tab &aux (all (make-hash-table)))
-  (dolist (col (table-sym tab) all)    
-    (dolist (val (col-vals col))
-      (let ((key (make-range-key :pos (col-pos val)  
-                                 :val val)))
-        (setf (gethash all key)
-              (make-range :val  val
-                          :col  col
-                          :abcd (abcd0 tab)))))))
-
-(defun abouts (tab)
-  (let ((all     (make-hash-table :test #'equal)) ; all the results
-        (klasses (klassNames tab))) ; all thee class ames
-    (labels 
-        (
-  (let* ((tab  (egs file)))
-   
-        (o pos val))))))
 
 (deftest keyTest (&key (bb 2) (aa 10))
   (o aa bb)

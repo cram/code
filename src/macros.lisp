@@ -23,7 +23,7 @@
        (incf ,n)
        ,@body)))
 
-(defmacro dohash ((k v h &optional out) &body body )
+(defmacro doh ((k v h &optional out) &body body )
   "Set key 'k' and value 'v' to each item in a list, and its position."
   `(progn
      (maphash #'(lambda (,k ,v)
@@ -57,15 +57,22 @@
    let, multivalue-bind and  labels"
   (let!prim (car specs) (cdr specs) body))
 
-(defun defslot  (name form)
-  `(,name
-    :initarg  ,(intern (symbol-name name) "KEYWORD")
+(defun defslot  (slot x form)
+  `(,slot
+    :initarg  ,(intern (symbol-name slot) "KEYWORD")
     :initform ,form
-    :accessor ,name))
+    :accessor ,(intern (format nil "~a-~a" x slot))))
 
 (defclass thing () ())
 
 (defmacro defthing (x parent &rest slots)
   `(defclass ,x (,parent)
-     ,(loop for (x form) in slots collect (defslot x form))))
+     ,(loop for (slot form) in slots collect (defslot slot x form))))
 
+(defmacro ? (obj first-slot &rest more-slots)
+  "From https://goo.gl/dqnmvH.
+   Use case 2: access path known at load time.
+   In this case, pre-compute the access path as a macro."
+  (if (null more-slots)
+      `(slot-value ,obj ',first-slot)
+      `(? (slot-value ,obj ',first-slot) ,@more-slots)))
