@@ -19,7 +19,7 @@
 (load "strings")
 (load "fun")
 ;;; load stuff for fft
-;(load "abcd")
+(load "abcd")
 (load "cols")
 (load "table")
 (load "main")
