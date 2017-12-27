@@ -49,8 +49,8 @@
 (defmethod  add ((c col)  x row)
   (with-slots (n table has) c
     (unless (eql x #\?)
-      (let* ((whenx  (or (gethash has x)
-                         (another c))))
+      (let* ((whenx (or (gethash has x)
+                        (another c))))
         (setf (gethash has x) whenx)
         (incf n)
         (valid whenx x)
