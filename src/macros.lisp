@@ -53,4 +53,19 @@
       (t          `(let    ((,x1 ,x2))          ,@y)))))
  
 (defmacro let! (specs &body body)
+  "combines into one form
+   let, multivalue-bind and  labels"
   (let!prim (car specs) (cdr specs) body))
+
+(defun defslot  (name form)
+  `(,name
+    :initarg  ,(intern (symbol-name name) "KEYWORD")
+    :initform ,form
+    :accessor ,name))
+
+(defclass thing () ())
+
+(defmacro defthing (x parent &rest slots)
+  `(defclass ,x (,parent)
+     ,(loop for (x form) in slots collect (defslot x form))))
+

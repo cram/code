@@ -17,8 +17,9 @@
 (load "rand")
 (load "lists")
 (load "strings")
+(load "fun")
 ;;; load stuff for fft
-(load "abcd")
+;(load "abcd")
 (load "cols")
 (load "table")
 (load "main")
@@ -33,19 +34,33 @@
 (deftest _weather ()
   (egs "weathernumerics"))
 
-(defun rankvals (tab)
-  (let ((all     (make-hash-table :test #'equal))
-        (klasses (klassNames tab)))
+(defstruct range 
+  key
+  (cost-observe 0)
+  (cost-change  0)
+  klass abcd objs)
+
+(defstruct range-key val pos)
+(defun range-pos (x) (col-pos (range-col x))
+
+(defun ranges (tab &aux (all (make-hash-table)))
+  (dolist (col (table-sym tab) all)    
+    (dolist (val (col-vals col))
+      (let ((key (make-range-key :pos (col-pos val)  
+                                 :val val)))
+        (setf (gethash all key)
+              (make-range :val  val
+                          :col  col
+                          :abcd (abcd0 tab)))))))
+
+(defun abouts (tab)
+  (let ((all     (make-hash-table :test #'equal)) ; all the results
+        (klasses (klassNames tab))) ; all thee class ames
     (labels 
-        ((about (col val &aux (key `(,(col-pos col) ,val)))
-           (or (gethash all key)
-               (setf (gethash all key) (abcd0 tab)))))
-  (let* ((tab  (egs file))
-         
-    (dolist (col (table-sym tab))
-      (let ((pos (col-pos col)))
-        (dolist (val (col-vals col))
-          (o pos val))))))
+        (
+  (let* ((tab  (egs file)))
+   
+        (o pos val))))))
 
 (deftest keyTest (&key (bb 2) (aa 10))
   (o aa bb)
