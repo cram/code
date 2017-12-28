@@ -17,8 +17,8 @@ gitting:
 		@git config --global user.name "$(Name)"
 
 push: gitting
-	@git commit -am updated
 	@git status
+	@git commit -am updated
 	@git push
 
 pull: gitting
