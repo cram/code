@@ -8,6 +8,7 @@ me:
 	@$(MAKE) Name="Tim Menzies" Email="tim@menzies.us" gitting
 
 gitting:
+		@git config --global push.default matching
 	@git config user.name "$(Name)"
 	@git config user.email "$(Email)"
 	@git config --global credential.helper cache
