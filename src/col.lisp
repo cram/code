@@ -1,5 +1,6 @@
-;;;; Columns
+
 (defun prefix (x y) (eql (char (symbol-name x) 0) y))
+
 (defun skip     (x) (prefix x #\?))
 (defun more     (x) (prefix x #\>))
 (defun less     (x) (prefix x #\<))
@@ -9,10 +10,9 @@
 (defun numeric  (x) (or (num x)   (less x) (more x)))
 (defun sym      (x) (and (not (num x)) (not (goal x))))
 
-(defvar *ids* 0)
-
-  (defstruct col 
-      (id (incf *ids*))
+;------------------------------
+(defstruct col 
+      (id (id+))
       (n 0) name pos table 
       (scores (make-hash-table)))
 
@@ -21,7 +21,11 @@
     (counts (make-hash-table)))
 
 (defstruct (num (:include col)) 
-    all)
+    (lo most-positive-fixnum)
+		(hi most-negative-fixnum)
+		all)
+
+;------------------------------
 
 (defmethod print-object ((c col) stream)
   (with-slots (name pos) c
@@ -30,15 +34,19 @@
                       (pos  ,pos)
                       ))))
 
+;------------------------------
 (defmethod valid ((n num) x)
-  (assert (numberp x) (x) "Not a number ~a" x))
+  (assert (numberp x) (x) "Not a number ~a" x))  
 
 (defmethod valid ((s sym) x)
   (declare (ignore s x)))
      
-(defmethod add1 ((n num) x)
-  (incf (num-n n))
-  (push x (num-all n)))
+;------------------------------
+(defmethod add1 ((n num) x) 
+	(with-slots (all lo hi) n
+		(setf lo (min lo x)
+					hi (max hi x))
+		(push x all)))
 
 (defmethod add1 ((s sym) x)
   (with-slots (most mode counts  n ) s
@@ -48,6 +56,23 @@
           (setf most new
                 mode x)))))
 
+(defun add (col x)
+  (unless (eql col #\?)
+    (incf (col-n col))
+    (valid col x)
+    (add1 col x))
+  x)
+
+;------------------------------
+(defmethod norm ((s sym) x) x)
+
+(defmethod norm ((n num) x)  
+	(with-slots (lo hi) n
+		(/ (- x lo)
+			 (+ (- hi lo)
+					(/ 1 most-positive-fixnum)))))
+
+;------------------------------
 (defmemo sym-keys (s)
    (hash-keys (sym-counts s)))
 
@@ -57,13 +82,7 @@
          (table-klassCol
            (col-table s)))))
 
-(defun add (col x)
-  (unless (eql col #\?)
-    (incf (col-n col))
-    (valid col x)
-    (add1 col x))
-  x)
-
+;------------------------------
 (defstruct span hi lo name)
 
 (defmethod range ((s sym) x)

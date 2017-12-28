@@ -23,6 +23,9 @@ push: gitting
 pull: gitting
 	@git pull
 
+play:
+	sbcl --noinform
+	
 tdd:
 	$(MAKE) \
          Args="$(wordlist 3,$(words $(RUN_ARGS)),$(RUN_ARGS))"\

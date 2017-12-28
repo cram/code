@@ -5,6 +5,5 @@
          (args (and com (cdr com))))
     (if fn
       (apply fn args)
-      (tests)
-      )
+      (tests))
     (bye)))

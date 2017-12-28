@@ -25,6 +25,7 @@
   
   (defun tests ()
     (when *tests*
+      (print *tests*)
       (mapc #'funcall  (reverse *tests*))
       (format t "~&~%; pass : ~a = ~5,1f% ~%; fail : ~a = ~5,1f% ~%"
               pass (* 100 (/ pass (+ 0.0001 pass fail)))

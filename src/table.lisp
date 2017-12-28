@@ -1,45 +1,38 @@
+(defstruct table  
+  (id (id+))
+  name cols egs )
 
-(defconstant +keeping+ 
-  '(num  ; independent variables, numerics 
-    sym  ; independent variables, symbolic
-    klass;   dependent variables, symbolic
-    more ;   dependent variables, numeric
-    less ;   dependent variables, numeric
-    )
-  "Keep some special columns in a seperate list.
-   For every kept column, there must be an arity/1 
-   predictate of the same name that returns 't' if
-   it recognizes that column name.")
- 
-;; programming note. any slot starting with "_"
-;; is come common tedious join that we do once, then cache
+(defun someCols (tab fn)
+  (select #'(lambda (x) (funcall fn (col-name x)))
+          (table-cols tab)))
 
-(eval `(defstruct table 
-         name cols egs 
-         ,@+keeping+))
+(defmemo table-more  (tab) (someCols tab #'more))
+(defmemo table-less  (tab) (someCols tab #'less))
+(defmemo table-klass (tab) (someCols tab #'klass))
+(defmemo table-num   (tab) (someCols tab #'num)) 
+(defmemo table-sym   (tab) (someCols tab #'sym))
 
 (defun table-klassCol (tab)
   (car (table-klass tab)))
 
-(let ((id 0))
-  (defstruct row 
-        (id (incf id))
-        table cells  ))
+(defstruct row 
+  (id (id+))
+  table cells)
 
 (defun row-cell (row col)
   (aref (row-cells row) (col-pos col)))
 
 (defmemo row-klassValue (row)
-   (aref
-     (row-cells row)
-     (col-pos
-       (table-klassCol 
-         (row-table row)))))
+  (aref
+   (row-cells row)
+   (col-pos
+    (table-klassCol 
+     (row-table row)))))
 
 (defmemo row-klassRange (row)
-   (range
-     (table-klassCol (row-table row))
-     (row-klassValue row)))
+  (range
+   (table-klassCol (row-table row))
+   (row-klassValue row)))
 
 (defmethod print-object ((r row) stream)
   (with-slots (id cells ) r
@@ -52,38 +45,33 @@
 (defun data (&key name cols egs
                   &aux (tab (make-table :name name)))
   (labels 
-    ((goodRow (tab row) 
-              (assert (eql (length row)
-                           (length (table-cols tab)))
-                      (row) "wrong length ~a" row)
-              t)
-     (makeColumn (txt pos tab)
-                 (funcall
-                   (if (numeric txt) #'make-num #'make-sym)
-                   :name  txt 
-                   :pos   pos 
-                   :table tab))
-     (columnKeeper (tab pos txt)
-                   (let* ((col (makeColumn txt pos tab)))
-                     (push col (table-cols tab))
-                     (dolist (one +keeping+)
-                       (if (funcall one (col-name col))
-                         (push col (slot-value tab one))))))
-     (handle1Row (tab cells)
-                 (let ((row (make-row :table tab
-                                      :cells (l->a cells))))
-                   (push row (table-egs tab))
-                   (dolist (col (table-cols tab))
-                     (add col (row-cell row col)))))
-     )
-    ;; now we can begin
-    (doitems (txt pos cols)
-             (if (not (skip txt))
-               (columnKeeper tab pos txt)))
-    (dolist (eg egs)
-      (if (goodRow tab eg)
-        (handle1Row tab eg)))
-    tab))
+   ((goodRow (tab row) 
+             (assert (eql (length row)
+                          (length (table-cols tab)))
+                     (row) "wrong length ~a" row)
+             t)
+    (makeColumn (txt pos tab)
+                (funcall
+                 (if (numeric txt) #'make-num #'make-sym)
+                 :name  txt 
+                 :pos   pos 
+                 :table tab))
+    (handle1Row (tab cells)
+                (let ((row (make-row :table tab
+                                     :cells (l->a cells))))
+                     (push row (table-egs tab))
+                     (dolist (col (table-cols tab))
+                       (add col (row-cell row col)))))
+    )
+   ;; now we can begin
+   (doitems (txt pos cols)
+     (if (not (skip txt))
+         (push (makeColumn txt pos tab)
+               (table-cols tab))))
+   (dolist (eg egs)
+     (if (goodRow tab eg)
+         (handle1Row tab eg)))
+   tab))
 
 (defun score (tab)
   (let ((klasses (sym-keys (table-klassCol tab))))
