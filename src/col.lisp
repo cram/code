@@ -9,10 +9,14 @@
 (defun numeric  (x) (or (num x)   (less x) (more x)))
 (defun sym      (x) (and (not (num x)) (not (goal x))))
 
-(defstruct col (n 0) name pos table)
+(defvar *ids* 0)
+
+  (defstruct col 
+      (id (incf *ids*))
+      (n 0) name pos table)
 
 (defstruct (sym (:include col)) 
-    (most 0) (mode) (hash (make-hash-table)) _keys)
+    (most 0) (mode) (hash (make-hash-table)))
 
 (defstruct (num (:include col)) 
     all)
@@ -35,20 +39,15 @@
   (push x (num-all n)))
 
 (defmethod add1 ((s sym) x)
-  (with-slots (most mode hash n _keys) s
+  (with-slots (most mode hash n ) s
     (incf n)
     (let* ((new (incf (gethash x hash 0))))
-      (if (eql new 1)
-          (setf _keys nil))
       (if (> new most)
           (setf most new
                 mode x)))))
 
-(defun sym-keys (s)
-  (with-slots (_keys hash) s
-    (or _keys
-        (setf _keys
-              (hash-keys hash)))))
+(defmemo sym-keys (s)
+   (hash-keys (sym-hash s)))
 
 (defun add (col x)
   (unless (eql col #\?)

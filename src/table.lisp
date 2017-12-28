@@ -24,41 +24,30 @@
 (let ((id 0))
   (defstruct row 
         (id (incf id))
-        table cells _klassValue _klassRange))
+        table cells  ))
 
 (defun row-cell (row col)
   (aref (row-cells row) (col-pos col)))
 
-(defun row-klassValue (row)
-  "cache long access to klass value"
-  (with-slots (_klassValue table cells) row
-    (or _klassValue
-        (setf _klassValue
-              (aref
-                cells
-                (col-pos
-                  (table-klassCol 
-                    table)))))))
+(defmemo row-klassValue (row)
+   (aref
+     (row-cells row)
+     (col-pos
+       (table-klassCol 
+         (row-table row)))))
 
-(defun row-klassRange (row)
-  "cache long access to klass range"
-  (with-slots (_klassRange table) row
-    (or _klassRange
-        (setf _klassRange
-              (range
-                (table-klassCol table)
-                (row-klassValue row))))))
+(defmemo row-klassRange (row)
+   (range
+     (table-klassCol (row-table row))
+     (row-klassValue row)))
 
 (defmethod print-object ((r row) stream)
-  (with-slots (id cells _klassValue _klassRange) r
+  (with-slots (id cells ) r
     (format stream "~a" 
             `(,(type-of r)
                (id ,id)
                (cells  ,cells)
-               (_klassValue ,_klassValue)
-               (_klassRange ,_klassRange)
                ))))
-
 
 (defun table-results0 (tab)
   (results0 (sym-keys (table-klassCol tab))))
@@ -99,6 +88,3 @@
       (if (goodRow tab eg)
         (handle1Row tab eg)))
     tab))
-
-(defun rankRanges (tab)
-  )

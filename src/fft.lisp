@@ -16,11 +16,12 @@
 ;;; load standard stuff
 (load "macros") 
 (load "tests")
+(load "sys")
+(load "fun")
 (load "rand")
 (load "lists")
 (load "hash")
 (load "strings")
-(load "fun")
 ;;; load stuff for fft
 (load "abcd")
 (load "col")
@@ -38,7 +39,9 @@
   (let* ((tab (egs :file "weathernumerics"))
          (kcol (table-klassCol tab)))
     (test (length (table-egs tab)) 14)
-    (test (sym-keys kcol) '(no yes))))
+    (test (sym-keys kcol) '(no yes))
+    (print (sym-keys kcol))
+    tab))
 
 
 (deftest keyTest (&key (bb 2) (aa 10))
