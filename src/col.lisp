@@ -13,10 +13,12 @@
 
   (defstruct col 
       (id (incf *ids*))
-      (n 0) name pos table)
+      (n 0) name pos table 
+      (scores (make-hash-table)))
 
 (defstruct (sym (:include col)) 
-    (most 0) (mode) (hash (make-hash-table)))
+    (most 0) (mode) 
+    (counts (make-hash-table)))
 
 (defstruct (num (:include col)) 
     all)
@@ -39,15 +41,21 @@
   (push x (num-all n)))
 
 (defmethod add1 ((s sym) x)
-  (with-slots (most mode hash n ) s
+  (with-slots (most mode counts  n ) s
     (incf n)
-    (let* ((new (incf (gethash x hash 0))))
+    (let* ((new (incf (gethash x counts 0))))
       (if (> new most)
           (setf most new
                 mode x)))))
 
 (defmemo sym-keys (s)
-   (hash-keys (sym-hash s)))
+   (hash-keys (sym-counts s)))
+
+(defmemo sym-results (s)
+   (results0 
+      (sym-keys 
+         (table-klassCol
+           (col-table s)))))
 
 (defun add (col x)
   (unless (eql col #\?)

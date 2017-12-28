@@ -49,9 +49,6 @@
                (cells  ,cells)
                ))))
 
-(defun table-results0 (tab)
-  (results0 (sym-keys (table-klassCol tab))))
-  
 (defun data (&key name cols egs
                   &aux (tab (make-table :name name)))
   (labels 
@@ -75,7 +72,6 @@
      (handle1Row (tab cells)
                  (let ((row (make-row :table tab
                                       :cells (l->a cells))))
-                   (row-klassRange row) 
                    (push row (table-egs tab))
                    (dolist (col (table-cols tab))
                      (add col (row-cell row col)))))
@@ -88,3 +84,15 @@
       (if (goodRow tab eg)
         (handle1Row tab eg)))
     tab))
+
+(defun score (tab)
+  (let ((klasses (sym-keys (table-klassCol tab))))
+    (dolist (row (table-egs tab))
+      (dolist (col (table-sym tab))
+        (dolist (val (sym-keys col))
+          (dolist (predicted klasses)
+            (results+ (sym-results col)
+                      (row-klassValue row)
+                      predicted)))))))
+
+

@@ -41,7 +41,9 @@
     (test (length (table-egs tab)) 14)
     (test (sym-keys kcol) '(no yes))
     (print (sym-keys kcol))
-    tab))
+   (table-results0  tab)
+   (score tab)
+   ))
 
 
 (deftest keyTest (&key (bb 2) (aa 10))
