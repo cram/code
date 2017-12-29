@@ -1,1 +1,6 @@
-SBCL 1.1.14
+SBCL>=1.1.14 # essential
+MAKE>=3.81   # rest are optional
+VIM>=7.4
+GIT>=1.9
+EGREP>=2.16
+AWK>=4.0.1
