@@ -12,35 +12,35 @@
 
 ;------------------------------
 (defstruct col 
-      (id (id+))
-      (n 0) name pos table 
-      (scores (make-hash-table)))
+	(id (id+))
+	(n 0) name pos table 
+	(scores (make-hash-table)))
 
 (defstruct (sym (:include col)) 
-    (most 0) (mode) 
-    (counts (make-hash-table)))
+	(most 0) (mode) 
+	(counts (make-hash-table)))
 
 (defstruct (num (:include col)) 
-    (lo most-positive-fixnum)
-		(hi most-negative-fixnum)
-		all)
+	(lo most-positive-fixnum)
+	(hi most-negative-fixnum)
+	all)
 
 ;------------------------------
 
 (defmethod print-object ((c col) stream)
-  (with-slots (name pos) c
-    (format stream "~a" `(,(type-of c)
-                      (name ,name)
-                      (pos  ,pos)
-                      ))))
+	(with-slots (name pos) c
+		(format stream "~a" `(,(type-of c)
+													 (name ,name)
+													 (pos  ,pos)
+													 ))))
 
 ;------------------------------
 (defmethod valid ((n num) x)
-  (assert (numberp x) (x) "Not a number ~a" x))  
+	(assert (numberp x) (x) "Not a number ~a" x))  
 
 (defmethod valid ((s sym) x)
-  (declare (ignore s x)))
-     
+	(declare (ignore s x)))
+
 ;------------------------------
 (defmethod add1 ((n num) x) 
 	(with-slots (all lo hi) n
@@ -49,19 +49,19 @@
 		(push x all)))
 
 (defmethod add1 ((s sym) x)
-  (with-slots (most mode counts  n ) s
-    (incf n)
-    (let* ((new (incf (gethash x counts 0))))
-      (if (> new most)
-          (setf most new
-                mode x)))))
+	(with-slots (most mode counts  n) s
+		(incf n)
+		(let* ((new (incf (gethash x counts 0))))
+					(if (> new most)
+							(setf most new
+										mode x)))))
 
 (defun add (col x)
-  (unless (eql col #\?)
-    (incf (col-n col))
-    (valid col x)
-    (add1 col x))
-  x)
+	(unless (eql col #\?)
+		(incf (col-n col))
+		(valid col x)
+		(add1 col x))
+	x)
 
 ;------------------------------
 (defmethod norm ((s sym) x) x)
@@ -74,29 +74,29 @@
 
 ;------------------------------
 (defmemo sym-keys (s)
-   (hash-keys (sym-counts s)))
+	(hash-keys (sym-counts s)))
 
 (defmemo sym-results (s)
-   (results0 
-      (sym-keys 
-         (table-klassCol
-           (col-table s)))))
+	(results0 
+	 (sym-keys 
+		(table-klassCol
+		 (col-table s)))))
 
 ;------------------------------
 (defstruct span hi lo name)
 
 (defmethod range ((s sym) x)
-  (declare (ignore s))
-  x)
+	(declare (ignore s))
+	x)
 
 (defun ranges (x) (noop x))
 
 (defmethod range ((n num) x)
-  (let (last)
-    (dolist (r (ranges n))
-      (setf last r)
-      (if (<= (span-lo r) x (span-hi r))
-	(return-from range (span-name r))))
-    (span-name last)))
+	(let (last)
+			 (dolist (r (ranges n))
+				 (setf last r)
+				 (if (<= (span-lo r) x (span-hi r))
+						 (return-from range (span-name r))))
+			 (span-name last)))
 
 

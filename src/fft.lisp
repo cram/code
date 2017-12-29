@@ -13,9 +13,9 @@
 
 (in-package :fft)
 
-(setf sb-ext:*compiler-print-variable-alist* 
-  '((*PRINT-LENGTH* . 10) (*PRINT-LEVEL* . 10) 
-                      (*PRINT-PRETTY* . t)))
+;; (setf sb-ext:*compiler-print-variable-alist* 
+;;   '((*PRINT-LENGTH* . 10) (*PRINT-LEVEL* . 10) 
+;;                       (*PRINT-PRETTY* . t)))
 
 ;;; load standard stuff
 ;;; Muffle compiler-notes globally
@@ -35,9 +35,7 @@
   (load "abcd")
   (load "col")
   (load "table")
-  (load "main"))
-   
- 
+  (load "main")) 
 
 (defun egs (&key (file "weathernumerics"))
   (let ((g (format nil "../data/~a.lisp" file)))
@@ -55,7 +53,13 @@
     (test 65 (num-lo (first (table-num tab))))
     (print (sym-keys kcol))
     tab
-  ; (table-results0  tab)
+    (score tab)
+;;     (dolist (col (table-sym tab))
+;;       (print (col-name col))
+;;       (results-show
+;;         (results! 
+;;          (sym-results col))))
+;;   ; (table-results0  tab)
   ; (score tab)
    ))
 

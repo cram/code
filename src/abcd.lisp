@@ -8,18 +8,23 @@
 	      (round (* 100 g))
 	      (round (* 100 acc)))))
 
-    
+(defun results-show (results &optional (str t))
+	(doh (klass result results)
+		(print klass)
+		(print result)))
+
 (defun result! (result)
 "Update all fields in one result"
   (with-slots ( a b c d acc pf prec pd f g n) result
-    (let (notpf (zip (float (expt 10 -16))))
+    (let (notpf 
+					(zip (/ 1 most-positive-fixnum)))
       (setf acc   (/ (+ a d)        (+ zip a b c d))
             pf    (/ c              (+ zip a c    ))
             prec  (/ d              (+ zip c d    ))
             pd    (/ d              (+ zip b d    ))
-	    notpf (- 1 pf)
+	    	    notpf (- 1 pf)
             f     (/ (* 2 prec pd)  (+ zip prec pd))
-	    g     (/ (* 2 notpf pd) (+ zip notpf pd)))))
+	          g     (/ (* 2 notpf pd) (+ zip notpf pd)))))
   result)
 
 (defun results! (results)
@@ -34,6 +39,11 @@
    (dolist (klass klasses results)
      (setf (gethash klass results)
            (make-result :target klass)))))
+
+(defun whatif (results actual)
+	"Whatif we assume we are predicting for each class?"
+	(doh (predicted result results results)
+		(results+ results actual predicted)))
 
 (defun results+ (results actual predicted)
   (doh (target result results results)

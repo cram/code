@@ -36,11 +36,3 @@
               (underlines widths)
               (terpri out))))))))
 
-
-(defun nestedHash (keys hash)
-  (dolist (key keys hash)
-    (let ((tmp (gethash hash key)))
-      (unless tmp
-        (setf tmp (make-hash-table))
-        (setf (gethash hash key) tmp))
-      (setf hash tmp))))

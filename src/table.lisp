@@ -1,6 +1,8 @@
+;-----------------------------------------
+; table stuff
 (defstruct table  
   (id (id+))
-  name cols egs )
+  name cols egs)
 
 (defun someCols (tab fn)
   (select #'(lambda (x) (funcall fn (col-name x)))
@@ -15,6 +17,9 @@
 (defun table-klassCol (tab)
   (car (table-klass tab)))
 
+
+;------------------------------------
+; row
 (defstruct row 
   (id (id+))
   table cells)
@@ -42,45 +47,57 @@
                (cells  ,cells)
                ))))
 
+;------------------------------------
 (defun data (&key name cols egs
-                  &aux (tab (make-table :name name)))
+             &aux (tab (make-table :name name)))
+  "Build table for name, col, egs"
   (labels 
-   ((goodRow (tab row) 
-             (assert (eql (length row)
-                          (length (table-cols tab)))
-                     (row) "wrong length ~a" row)
-             t)
-    (makeColumn (txt pos tab)
-                (funcall
-                 (if (numeric txt) #'make-num #'make-sym)
-                 :name  txt 
-                 :pos   pos 
-                 :table tab))
-    (handle1Row (tab cells)
-                (let ((row (make-row :table tab
-                                     :cells (l->a cells))))
-                     (push row (table-egs tab))
-                     (dolist (col (table-cols tab))
-                       (add col (row-cell row col)))))
+   ((okCol (txt)
+           (not (skip txt)))
+    (okRow (tab row) 
+           (assert (eql (length row)
+                        (length (table-cols tab)))
+                   (row) "wrong length ~a" row)
+           t)
+    (col+ (txt pos tab)
+          (funcall
+           (if (numeric txt) #'make-num #'make-sym)
+           :name  txt 
+           :pos   pos 
+           :table tab))
+    (row+ (tab cells)
+          (let ((row (make-row :table tab
+                               :cells (l->a cells))))
+               (push row (table-egs tab))
+               (dolist (col (table-cols tab))
+                 (add col (row-cell row col)))))
     )
    ;; now we can begin
    (doitems (txt pos cols)
-     (if (not (skip txt))
-         (push (makeColumn txt pos tab)
+     (if (okCol txt)
+         (push (col+ txt pos tab)
                (table-cols tab))))
    (dolist (eg egs)
-     (if (goodRow tab eg)
-         (handle1Row tab eg)))
+     (if (okRow tab eg)
+         (row+ tab eg)))
    tab))
 
+;--------------------------------------
+(defun col-val-results (tab)
+  (let ((out (make-hash-table :test #'equal))) 
+       (print out)
+       (dolist (col (table-sym tab))
+         (dolist (val (sym-keys col))
+           (setf (gethash `(,(col-name col) ,val) out)
+                 (results0 (sym-keys (table-klassCol tab))))))))
+
 (defun score (tab)
-  (let ((klasses (sym-keys (table-klassCol tab))))
+  (let ((scores (col-val-results tab)))
+       (print 1)
     (dolist (row (table-egs tab))
       (dolist (col (table-sym tab))
         (dolist (val (sym-keys col))
-          (dolist (predicted klasses)
-            (results+ (sym-results col)
-                      (row-klassValue row)
-                      predicted)))))))
+          (whatif (gethash `(,(col-name col) ,val) scores)
+                  (row-klassValue row)))))))
 
 
