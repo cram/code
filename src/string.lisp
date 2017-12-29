@@ -6,3 +6,6 @@
 (defun dot (&optional (c "."))
   (princ c) 
   (finish-output))
+
+
+      
