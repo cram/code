@@ -5,29 +5,7 @@
 
 <img align=right src="http://www.lisperati.com/lisplogo_warning_256.png">
 
-## Installation
 
-     sudo apt-get install sbcl # linux
-     brew installl sbcl        # mac
-     git clone http://github.com/cram/code
-     
-## Example Usage
-
-     cd code/src
-     sh lisp fft weather # simple test to see its all working
-     
-If that all words then you can  use `(load "fft")` to get lots of code
-in package `cram:`.
-
-## Status 
-
-This code is currently 0.3. Still an internal hobby. 
-But I promise, before version 1.0,  to:
-
-- Port it to asdf/quicklisp before version 1.0.
-- Connect this repo to Travis CI.
-
-## Motivation
 
 One of my more effective teaching tricks 
 (for graduate students) is to:
@@ -46,8 +24,25 @@ real application;
 So here is my reference system for my standard data mining toolkit, written in a language
 that it is **very** unlikely that they have ever used before.
 
-Share and enjoy.
+Share and enjoy.  This code is currently 0.3. Still an internal hobby. 
+But I promise, before version 1.0,  to:
 
+- Port it to asdf/quicklisp before version 1.0.
+- Connect this repo to Travis CI.
+
+## Installation
+
+     sudo apt-get install sbcl # linux
+     brew installl sbcl        # mac
+     git clone http://github.com/cram/code
+     
+## Example Usage
+
+     cd code/src
+     sh lisp fft weather # simple test to see its all working
+     
+If that all words then you can  use `(load "fft")` to get lots of code
+in package `cram:`.
 
 ## Geeky stuff
 
