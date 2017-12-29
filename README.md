@@ -19,11 +19,13 @@
 If that all words then you can  use `(load "fft")` to get lots of code
 in package `cram:`.
 
-## Stataus 
+## Status 
 
-This code is currently 0.3. Still an itnernal hobby. 
-But I promise to port it to asdf/quicklisp before version 1.0.
+This code is currently 0.3. Still an internal hobby. 
+But I promise, before version 1.0,  to:
 
+- Port it to asdf/quicklisp before version 1.0.
+- Connect this repo to Travis CI.
 
 ## Motivation
 
@@ -53,6 +55,10 @@ The file `src/Makefile` implements  some (optional) shortcuts that I found
 useful. Fell free to ignore it 
 
 ## Todo
+
+### Install into Quicklisp
+
+Of course.
 
 ### CI Testing
 
