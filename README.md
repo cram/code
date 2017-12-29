@@ -32,12 +32,19 @@ that it is **very** unlikely that they have ever used before.
 Share and enjoy.
 
 
-## For the Mega-Geeks
+## Installation
 
-Run
+     sudo apt-get install sbcl # linux
+     brew installl sbcl        # mac
+     git clone http://github.com/cram/code
+     cd code/src
+     bash +x lisp
+     ./lisp fft weather # simple test to see its all working
+     
+If that all words then you can `(load "fft")` to get lots of code
+in package `cram:`.
 
-     sh iva
+## Geeky stuff
 
-to get some interesting short cuts for LISP coding. See [source code](iva) for details.
-
-
+The file `src/Makefile` implements  some (optional) shortcuts that I found 
+useful. Fell free to ignore 

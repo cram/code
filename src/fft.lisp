@@ -1,18 +1,16 @@
 #|
-; load without running tests
+; load without running tests 
 (load "fft.lisp")
 
 ; load with running tests
 (let ((*features* (cons :production *features*)))
   (load "fft.lisp"))
 |#
-
 (defpackage :fft
     (:use :common-lisp) 
     (:export #:main))
 
 (in-package :fft)
-
 ;; (setf sb-ext:*compiler-print-variable-alist* 
 ;;   '((*PRINT-LENGTH* . 10) (*PRINT-LEVEL* . 10) 
 ;;                       (*PRINT-PRETTY* . t)))
@@ -63,11 +61,9 @@
   ; (score tab)
    ))
 
-
-(deftest keyTest (&key (bb 2) (aa 10))
-  "can i access keys from command line?"
-  (o aa bb)
-  (print (* bb aa)))
+(deftest helloWorld (&key (salutation "hello")
+                          (person "world"))
+  (format t "~a ~a~%" salutation person))
 
 #+tdd (main)
  
