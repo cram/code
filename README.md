@@ -47,4 +47,20 @@ in package `cram:`.
 ## Geeky stuff
 
 The file `src/Makefile` implements  some (optional) shortcuts that I found 
-useful. Fell free to ignore 
+useful. Fell free to ignore it 
+
+## Todo
+
+### CI Testing
+
+Hook this into Travis CI using the tricks at
+[Prove](https://lispcookbook.github.io/cl-cookbook/testing.html)
+[c-travos](https://github.com/luismbo/cl-travis/blob/master/install.sh) or
+[ROSWELL](https://github.com/roswell/roswell/wiki/Travis-CI)
+or TOML:
+
+- https://github.com/pnathan/pp-toml/blob/master/.travis.yml
+- https://travis-ci.org/pnathan/pp-toml/jobs/99057762/config
+ 
+This may   mean replacing my `deftest`s with something from the above.
+Such is life.
