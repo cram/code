@@ -1,6 +1,6 @@
 (defun noop (&rest lst) lst)
 
-(defmacro defmemo (fn args &body body)
+(defmacro defone (fn args &body body)
   "Define a memoized function."
   `(memoize (defun ,fn ,args . ,body)))
 

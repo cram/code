@@ -8,11 +8,11 @@
   (select #'(lambda (x) (funcall fn (col-name x)))
           (table-cols tab)))
 
-(defmemo table-more  (tab) (someCols tab #'more))
-(defmemo table-less  (tab) (someCols tab #'less))
-(defmemo table-klass (tab) (someCols tab #'klass))
-(defmemo table-num   (tab) (someCols tab #'num)) 
-(defmemo table-sym   (tab) (someCols tab #'sym))
+(defone table-more  (tab) (someCols tab #'more))
+(defone table-less  (tab) (someCols tab #'less))
+(defone table-klass (tab) (someCols tab #'klass))
+(defone table-num   (tab) (someCols tab #'num)) 
+(defone table-sym   (tab) (someCols tab #'sym))
 
 (defun table-klassCol (tab)
   (car (table-klass tab)))
@@ -27,14 +27,14 @@
 (defun row-cell (row col)
   (aref (row-cells row) (col-pos col)))
 
-(defmemo row-klassValue (row)
+(defone row-klassValue (row)
   (aref
    (row-cells row)
    (col-pos
     (table-klassCol 
      (row-table row)))))
 
-(defmemo row-klassRange (row)
+(defone row-klassRange (row)
   (range
    (table-klassCol (row-table row))
    (row-klassValue row)))

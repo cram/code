@@ -73,10 +73,10 @@
 					(/ 1 most-positive-fixnum)))))
 
 ;------------------------------
-(defmemo sym-keys (s)
+(defone sym-keys (s)
 	(hash-keys (sym-counts s)))
 
-(defmemo sym-results (s)
+(defone sym-results (s)
 	(results0 
 	 (sym-keys 
 		(table-klassCol
