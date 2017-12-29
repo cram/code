@@ -5,12 +5,27 @@
 
 <img align=right src="http://www.lisperati.com/lisplogo_warning_256.png">
 
-For current details, see http://git.io/lisp. For an overview, see below.
+## Installation
 
-Note that this code is currently 0.3. Still an itnernal hobby. 
+     sudo apt-get install sbcl # linux
+     brew installl sbcl        # mac
+     git clone http://github.com/cram/code
+     
+## Example Usage
+
+     cd code/src
+     sh lisp fft weather # simple test to see its all working
+     
+If that all words then you can  use `(load "fft")` to get lots of code
+in package `cram:`.
+
+## Stataus 
+
+This code is currently 0.3. Still an itnernal hobby. 
 But I promise to port it to asdf/quicklisp before version 1.0.
 
------
+
+## Motivation
 
 One of my more effective teaching tricks 
 (for graduate students) is to:
@@ -31,18 +46,6 @@ that it is **very** unlikely that they have ever used before.
 
 Share and enjoy.
 
-
-## Installation
-
-     sudo apt-get install sbcl # linux
-     brew installl sbcl        # mac
-     git clone http://github.com/cram/code
-     cd code/src
-     bash +x lisp
-     ./lisp fft weather # simple test to see its all working
-     
-If that all words then you can `(load "fft")` to get lots of code
-in package `cram:`.
 
 ## Geeky stuff
 
