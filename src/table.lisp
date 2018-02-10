@@ -45,43 +45,43 @@
    
 (defstruct range col val goal a b c d)
 
-(defun score (memo tab col val  
-              goal   ; the thing i care about
-              row
-              &optional (yes #'noop) (no  #'noop))
-  (let ((actual  (row-klass tab row))
-         (a 0) (b 0) 
-        (c 0) (d 0))
-    (dohash (val1 values (gethash memo (col-name col)))
-      (dohash (klass count values) ;????
-          (if (eql val1 val)
-              (funcall yes goal klass row)
-              (funcall no  goal klass row))
-          (incf
-           (if (eql val1 val)
-               (if (eql goal actual) d c)
-               (if (eql goal actual) b a))
-           count)))
-    (make-range :col col :val val :goal goal
-                :a a :b :c c :d d)))
+;; (defun score (memo tab col val  
+;;               goal   ; the thing i care about
+;;               row
+;;               &optional (yes #'noop) (no  #'noop))
+;;   (let ((actual  (row-klass tab row))
+;;          (a 0) (b 0) 
+;;         (c 0) (d 0))
+;;     (dohash (val1 values (gethash memo (col-name col)))
+;;       (dohash (klass count values) ;????
+;;           (if (eql val1 val)
+;;               (funcall yes goal klass row)
+;;               (funcall no  goal klass row))
+;;           (incf
+;;            (if (eql val1 val)
+;;                (if (eql goal actual) d c)
+;;                (if (eql goal actual) b a))
+;;            count)))
+;;     (make-range :col col :val val :goal goal
+;;                 :a a :b :c c :d d)))
                   
-(defun handle1Row (tab row)
-  (push row (table-egs tab))
-  (dolist (col (table-cols tab))
-    (let* ((pos    (col-pos col))
-           (val    (aref row pos))
-           (klass  (row-klass tab row))
-           (key   `(,(col-name col) ,val ,klass))
-           (counts (nestedHash keys (table-memo tab))))
-      (incf (gethash counts klass))
-      (add (col-has col) val))))
+;; (defun handle1Row (tab row)
+;;   (push row (table-egs tab))
+;;   (dolist (col (table-cols tab))
+;;     (let* ((pos    (col-pos col))
+;;            (val    (aref row pos))
+;;            (klass  (row-klass tab row))
+;;            (key   `(,(col-name col) ,val ,klass))
+;;            (counts (nestedHash key (table-memo tab)))) ; was keys
+;;       (incf (gethash counts klass))
+;;       (add (col-has col) val))))
 
-(defun data (&key name cols egs)
-  (let ((tab  (make-table :name name)))
-    (doitems (colname pos cols)
-        (if (not (skip colname))
-            (columnKeeper tab pos colname)))
-    (dolist (eg egs)
-      (if (goodRow tab row)
-          (handle1Row tab (l->a eg))))
-    tab))
+;; (defun data (&key name cols egs)
+;;   (let ((tab  (make-table :name name)))
+;;     (doitems (colname pos cols)
+;;         (if (not (skip colname))
+;;             (columnKeeper tab pos colname)))
+;;     (dolist (eg egs)
+;;       (if (goodRow tab row)
+;;           (handle1Row tab (l->a eg))))
+;;     tab))

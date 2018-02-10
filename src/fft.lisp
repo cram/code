@@ -6,10 +6,15 @@
 |#
 
 (defpackage :fft
-    (:use :common-lisp)
-    (:export #:main))
+  (:use :common-lisp)
+  (:export #:main))
 
 (in-package :fft)
+
+(defun my-load  (f)
+  (handler-bind ((style-warning #'muffle-warning))
+     (load f)))
+
 
 ;;; load standard stuff
 (load "macros") 
@@ -20,9 +25,12 @@
 (load "fun")
 ;;; load stuff for fft
 ;(load "abcd")
-(load "cols")
-(load "table")
+(my-load "cols")
+ 
+(my-load "table")
+
 (load "main")
+(sb-ext:exit)
 
 (defun egs (f)
   (let ((g (format nil "../data/~a.lisp" f)))
