@@ -5,12 +5,7 @@
 
 <img align=right src="http://www.lisperati.com/lisplogo_warning_256.png">
 
-For current details, see http://git.io/lisp. For an overview, see below.
 
-Note that this code is currently 0.3. Still an itnernal hobby. 
-But I promise to port it to asdf/quicklisp before version 1.0.
-
------
 
 One of my more effective teaching tricks 
 (for graduate students) is to:
@@ -29,15 +24,47 @@ real application;
 So here is my reference system for my standard data mining toolkit, written in a language
 that it is **very** unlikely that they have ever used before.
 
-Share and enjoy.
+Share and enjoy.  This code is currently 0.3. Still an internal hobby. 
+But I promise, before version 1.0,  to:
 
+- Port it to asdf/quicklisp before version 1.0.
+- Connect this repo to Travis CI.
 
-## For the Mega-Geeks
+## Installation
 
-Run
+     sudo apt-get install sbcl # linux
+     brew installl sbcl        # mac
+     git clone http://github.com/cram/code
+     
+## Example Usage
 
-     sh iva
+     cd code/src
+     sh lisp fft weather # simple test to see its all working
+     
+If that all words then you can  use `(load "fft")` to get lots of code
+in package `cram:`.
 
-to get some interesting short cuts for LISP coding. See [source code](iva) for details.
+## Geeky stuff
 
+The file `src/Makefile` implements  some (optional) shortcuts that I found 
+useful. Fell free to ignore it 
 
+## Todo
+
+### Install into Quicklisp
+
+Of course.
+
+### CI Testing
+
+Hook this into Travis CI using the tricks at
+[Prove](https://lispcookbook.github.io/cl-cookbook/testing.html)
+[c-travos](https://github.com/luismbo/cl-travis/blob/master/install.sh) or
+[ROSWELL](https://github.com/roswell/roswell/wiki/Travis-CI)
+or TOML:
+
+- https://github.com/pnathan/pp-toml/blob/master/.travis.yml
+- https://travis-ci.org/pnathan/pp-toml/jobs/99057762/config
+ 
+This may   mean replacing my `deftest`s with something from the above.
+Such is life.

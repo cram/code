@@ -15,7 +15,7 @@
   (assert (not (member name *tests*))
           (name)
           "Repeated test ~a " name)
-  (push name *tests*))
+  (pushnew name *tests*))
 
 (let ((pass 0) (fail 0)) 
   (defun test (want got)
@@ -25,8 +25,9 @@
   
   (defun tests ()
     (when *tests*
+      (print *tests*)
       (mapc #'funcall  (reverse *tests*))
       (format t "~&~%; pass : ~a = ~5,1f% ~%; fail : ~a = ~5,1f% ~%"
-              pass (* 100 (/ pass (+ 0.000000001 pass fail)))
-              fail (* 100 (/ fail (+ 0.000000001 pass fail)))))))
+              pass (* 100 (/ pass (+ 0.0001 pass fail)))
+              fail (* 100 (/ fail (+ 0.0001 pass fail)))))))
 

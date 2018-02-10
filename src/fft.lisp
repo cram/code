@@ -1,15 +1,24 @@
 #|
-; load without running tests
-(load "fft.lisp"
+; load without running tests 
+(load "fft.lisp")
+
+; load with running tests
 (let ((*features* (cons :production *features*)))
   (load "fft.lisp"))
 |#
-
 (defpackage :fft
+<<<<<<< HEAD
   (:use :common-lisp)
   (:export #:main))
+=======
+    (:use :common-lisp) 
+    (:export #:main))
+>>>>>>> f10f4feb0ad7ad82a1050dbe3f6e2e98a6af706f
 
 (in-package :fft)
+;; (setf sb-ext:*compiler-print-variable-alist* 
+;;   '((*PRINT-LENGTH* . 10) (*PRINT-LEVEL* . 10) 
+;;                       (*PRINT-PRETTY* . t)))
 
 (defun my-load  (f)
   (handler-bind ((style-warning #'muffle-warning))
@@ -17,6 +26,7 @@
 
 
 ;;; load standard stuff
+<<<<<<< HEAD
 (load "macros") 
 (load "tests")
 (load "rand")
@@ -31,47 +41,56 @@
 
 (load "main")
 (sb-ext:exit)
+=======
+;;; Muffle compiler-notes globally
+;(declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
+>>>>>>> f10f4feb0ad7ad82a1050dbe3f6e2e98a6af706f
 
-(defun egs (f)
-  (let ((g (format nil "../data/~a.lisp" f)))
+(handler-bind ((style-warning #'muffle-warning))
+  (load "globals")
+  (load "macro") 
+  (load "test")
+  (load "sys")
+  (load "fun")
+  (load "rand")
+  (load "list")
+  (load "hash")
+  (load "string")
+  ;;; load stuff for fft
+  (load "abcd")
+  (load "col")
+  (load "table")
+  (load "main")) 
+
+(defun egs (&key (file "weathernumerics"))
+  (let ((g (format nil "../data/~a.lisp" file)))
     (assert  (probe-file g) (g) "missing file ~a" g)
+    (format t "; loading ~a ...~%" g)
     (with-open-file
         (in g :direction :input)
-      (apply #'data (read in))))) ;;
+      (apply #'data (read in)))))  
 
-(deftest _weather ()
-  (egs "weathernumerics"))
+(deftest weather ()
+  "load the smallest file possible"
+  (let* ((tab (egs :file "weathernumerics"))
+         (kcol (table-klassCol tab)))
+    (test 14 (length (table-egs tab)))
+    (test 65 (num-lo (first (table-num tab))))
+    (print (sym-keys kcol))
+    tab
+    (score tab)
+;;     (dolist (col (table-sym tab))
+;;       (print (col-name col))
+;;       (results-show
+;;         (results! 
+;;          (sym-results col))))
+;;   ; (table-results0  tab)
+  ; (score tab)
+   ))
 
-(defstruct range 
-  key
-  (cost-observe 0)
-  (cost-change  0)
-  klass abcd objs)
-
-(defstruct range-key val pos)
-(defun range-pos (x) (col-pos (range-col x))
-
-(defun ranges (tab &aux (all (make-hash-table)))
-  (dolist (col (table-sym tab) all)    
-    (dolist (val (col-vals col))
-      (let ((key (make-range-key :pos (col-pos val)  
-                                 :val val)))
-        (setf (gethash all key)
-              (make-range :val  val
-                          :col  col
-                          :abcd (abcd0 tab)))))))
-
-(defun abouts (tab)
-  (let ((all     (make-hash-table :test #'equal)) ; all the results
-        (klasses (klassNames tab))) ; all thee class ames
-    (labels 
-        (
-  (let* ((tab  (egs file)))
-   
-        (o pos val))))))
-
-(deftest keyTest (&key (bb 2) (aa 10))
-  (o aa bb)
-  (print (* bb aa)))
+(deftest helloWorld (&key (salutation "hello")
+                          (person "world"))
+  (format t "~a ~a~%" salutation person))
 
 #+tdd (main)
+ 

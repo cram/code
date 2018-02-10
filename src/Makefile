@@ -1,11 +1,20 @@
+Name=Tim Menzies
+Email=tim@menzies.us
+
+edit:
+	vim -u dotvimrc $f
+
 me:
 	@$(MAKE) Name="Tim Menzies" Email="tim@menzies.us" gitting
 
 gitting:
-	@git config user.name "$(Name)"
-	@git config user.email "$(Email)"
-	@git config --global credential.helper cache
-	@git config credential.helper 'cache --timeout=3600'
+		@git config --global push.default matching
+		@git config user.name "$(Name)"
+		@git config user.email "$(Email)"
+		@git config --global credential.helper cache
+		@git config credential.helper 'cache --timeout=3600'
+		@git config --global user.email "$(Email)"
+		@git config --global user.name "$(Name)"
 
 push: gitting
 	@git status
@@ -15,6 +24,9 @@ push: gitting
 pull: gitting
 	@git pull
 
+play:
+	sbcl --noinform
+	
 tdd:
 	$(MAKE) \
          Args="$(wordlist 3,$(words $(RUN_ARGS)),$(RUN_ARGS))"\
@@ -29,4 +41,3 @@ EGS=$(shell egrep '^eg' Makefile | awk -F: '{s = s " "$$1} END {print s}')
 
 demo:
 	@$(MAKE)  $(EGS)
-

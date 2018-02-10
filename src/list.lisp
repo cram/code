@@ -1,6 +1,10 @@
 (defun l->a (lst)
   (make-array (length lst) :initial-contents lst))
 
+(defun select (selector-fn facts)
+  "return all list items satisying selector-fn"
+  (remove-if-not selector-fn facts))  
+
 (defun printm (lsts &key (out t) (sep ",") (underline "-"))
   (let ((sep1 ""))
     (labels 
@@ -32,11 +36,3 @@
               (underlines widths)
               (terpri out))))))))
 
-
-(defun nestedHash (keys hash)
-  (dolist (key keys hash)
-    (let ((tmp (gethash hash key)))
-      (unless tmp
-        (setf tmp (make-hash-table))
-        (setf (gethash hash key) tmp))
-      (setf hash tmp))))
