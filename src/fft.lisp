@@ -7,13 +7,9 @@
   (load "fft.lisp"))
 |#
 (defpackage :fft
-<<<<<<< HEAD
   (:use :common-lisp)
   (:export #:main))
-=======
-    (:use :common-lisp) 
-    (:export #:main))
->>>>>>> f10f4feb0ad7ad82a1050dbe3f6e2e98a6af706f
+
 
 (in-package :fft)
 ;; (setf sb-ext:*compiler-print-variable-alist* 
@@ -26,25 +22,9 @@
 
 
 ;;; load standard stuff
-<<<<<<< HEAD
-(load "macros") 
-(load "tests")
-(load "rand")
-(load "lists")
-(load "strings")
-(load "fun")
-;;; load stuff for fft
-;(load "abcd")
-(my-load "cols")
- 
-(my-load "table")
 
-(load "main")
-(sb-ext:exit)
-=======
 ;;; Muffle compiler-notes globally
 ;(declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
->>>>>>> f10f4feb0ad7ad82a1050dbe3f6e2e98a6af706f
 
 (handler-bind ((style-warning #'muffle-warning))
   (load "globals")
